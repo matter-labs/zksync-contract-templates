@@ -10,3 +10,18 @@ Currently, the repository offers specific templates for Hardhat, an Ethereum dev
 
 - [Solidity Template](./templates/hardhat/solidity/)
 - [Vyper Template](./templates/hardhat/vyper/)
+
+## 🤝 Contribution
+
+Your contributions are always welcome! Whether it's submitting PRs, suggesting improvements, or reporting issues, your feedback is invaluable in refining these templates.
+
+## 🌍 Official Links
+
+- [Website](https://zksync.io/)
+- [GitHub](https://github.com/matter-labs)
+- [Twitter](https://twitter.com/zksync)
+- [Discord](https://join.zksync.dev/)
+
+## 📜 License
+
+This project is licensed under [MIT](./LICENSE-MIT).
