@@ -7,16 +7,21 @@ import "@matterlabs/hardhat-zksync-node";
 import "@matterlabs/hardhat-zksync-deploy";
 
 const config: HardhatUserConfig = {
-  defaultNetwork: "zkSyncTestnet",
+  defaultNetwork: "zkSyncSepoliaTestnet",
   networks: {
-    zkSyncTestnet: {
-      url: "https://testnet.era.zksync.dev",
-      ethNetwork: "goerli",
+    zkSyncSepoliaTestnet: {
+      url: "https://sepolia.era.zksync.dev",
+      ethNetwork: "sepolia",
       zksync: true,
     },
     zkSyncMainnet: {
       url: "https://mainnet.era.zksync.io",
       ethNetwork: "mainnet",
+      zksync: true,
+    },
+    zkSyncGoerliTestnet: { // deprecated network
+      url: "https://testnet.era.zksync.dev",
+      ethNetwork: "goerli",
       zksync: true,
     },
     dockerizedNode: {
