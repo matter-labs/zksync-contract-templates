@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Contract, Wallet } from "zksync-web3";
+import { Contract, Wallet } from "zksync-ethers";
 import { getWallet, deployContract, LOCAL_RICH_WALLETS } from '../../deploy/utils';
 
 describe("MyNFT", function () {
