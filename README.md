@@ -7,9 +7,12 @@ Welcome to the `zkSync Contract Templates` repository. This collection is design
 Currently, the repository offers specific templates for Hardhat, an Ethereum development environment, tailored for both Solidity and Vyper:
 
 ### Hardhat Templates
-
-- [Solidity Template](./templates/hardhat/solidity/)
-- [Vyper Template](./templates/hardhat/vyper/)
+- Ethers v6 (latest)
+  - [Solidity Template](./templates/hardhat/solidity/)
+  - [Vyper Template](./templates/hardhat/vyper/)
+- Ethers v5
+  - [Solidity Template](./templates/hardhat_ethers5/solidity/)
+  - [Vyper Template](./templates/hardhat_ethers5/vyper/)
 
 ## 🤝 Contribution
 
