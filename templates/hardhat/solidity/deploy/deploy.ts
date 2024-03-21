@@ -1,10 +1,23 @@
 import { deployContract } from "./utils";
+import { deployProxyContract } from "./proxy_utils";
 
-// An example of a basic deploy script
-// It will deploy a Greeter contract to selected network
-// as well as verify it on Block Explorer if possible for the network
-export default async function () {
+/**
+ * Deploy a contract, optionally through a proxy.
+ * 
+ * @param {boolean} useProxy - Whether to deploy through a proxy.
+ */
+export default async function deploy(useProxy = false) {
   const contractArtifactName = "Greeter";
   const constructorArguments = ["Hi there!"];
-  await deployContract(contractArtifactName, constructorArguments);
+
+  if (useProxy) {
+    console.log("Deploying through a proxy...");
+    await deployProxyContract(contractArtifactName, constructorArguments);
+  } else {
+    console.log("Deploying directly...");
+    await deployContract(contractArtifactName, constructorArguments);
+  }
+
+  console.log(`${contractArtifactName} deployed successfully.`);
 }
+
