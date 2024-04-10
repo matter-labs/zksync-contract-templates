@@ -1,11 +1,11 @@
 import { Provider, Wallet } from "zksync-ethers";
 import * as hre from "hardhat";
-import { Deployer } from "@matterlabs/hardhat-zksync-deploy";
+import { Deployer } from "@matterlabs/hardhat-zksync";
 import dotenv from "dotenv";
 import { ethers } from "ethers";
 
-import "@matterlabs/hardhat-zksync-node/dist/type-extensions";
-import "@matterlabs/hardhat-zksync-verify/dist/src/type-extensions";
+import "@matterlabs/hardhat-zksync/dist/type-extensions";
+import "@matterlabs/hardhat-zksync/dist/src/type-extensions";
 
 // Load env file
 dotenv.config();
