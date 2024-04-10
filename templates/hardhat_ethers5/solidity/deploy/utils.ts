@@ -5,8 +5,8 @@ import dotenv from "dotenv";
 import { formatEther } from "ethers/lib/utils";
 import { BigNumberish } from "ethers";
 
-import "@matterlabs/hardhat-zksync/dist/type-extensions";
-import "@matterlabs/hardhat-zksync/dist/src/type-extensions";
+import "@matterlabs/hardhat-zksync-node/dist/type-extensions";
+import "@matterlabs/hardhat-zksync-verify/dist/src/type-extensions";
 
 // Load env file
 dotenv.config();
