@@ -1,6 +1,6 @@
 import { Provider, Wallet } from "zksync-ethers";
 import * as hre from "hardhat";
-import { Deployer } from "@matterlabs/hardhat-zksync-deploy";
+import { Deployer } from "@matterlabs/hardhat-zksync";
 import dotenv from "dotenv";
 import { formatEther } from "ethers/lib/utils";
 import { BigNumberish } from "ethers";
