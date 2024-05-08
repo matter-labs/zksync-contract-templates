@@ -4,3 +4,6 @@
 [submodule "templates/quickstart/foundry/factory/lib/forge-std"]
 	path = templates/quickstart/foundry/factory/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "templates/quickstart/foundry/testing/lib/forge-std"]
+	path = templates/quickstart/foundry/testing/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
