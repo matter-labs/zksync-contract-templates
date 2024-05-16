@@ -1,5 +1,6 @@
+import "@nomicfoundation/hardhat-chai-matchers";
 import { expect } from "chai";
-import { ethers } from "hardhat";
+import { ethers } from "ethers";
 import { getWallet, LOCAL_RICH_WALLETS, deployContract } from "../deploy/utils";
 
 describe("CrowdfundingCampaign", function () {
