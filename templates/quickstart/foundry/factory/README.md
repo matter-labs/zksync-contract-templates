@@ -61,7 +61,7 @@ cast wallet import myKeystore --interactive
 
 This will return an address (keystore address), **copy it for later use**.
 
-3. When running `cast` commands that require a private key, use `--account myKeystore --sender <KEYSTORE_ADDRESS>` instead of `--private-key <PRIVATE_KEY>`. This will require you to enter the keystore password you provided before.
+3. When running `cast` commands that require a private key, use `--account myKeystore --sender <KEYSTORE_ADDRESS>``. This will require you to enter the keystore password you provided before.
 
 ### Deploy
 
