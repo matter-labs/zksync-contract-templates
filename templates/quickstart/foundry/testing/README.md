@@ -197,7 +197,7 @@ It's recommended to use Foundry keystore to store your development account priva
 2. Create a keystore and import your private key by running:
 
 ```shell
-cast wallet import myKeystore interactive
+cast wallet import --interactive
 # enter your PK when prompted and provide a password
 ```
 
