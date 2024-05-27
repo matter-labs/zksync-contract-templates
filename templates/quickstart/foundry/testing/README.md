@@ -201,11 +201,13 @@ cast wallet import --interactive
 # enter your PK when prompted and provide a password
 ```
 
-> Note that `myKeystore` can be any name.
+> Note that the name `myKeystore` is arbitrary and can be updated. If you decide to use another name, be sure to reference it when using `cast`.
 
 This will return an address (keystore address), **copy it for later use**.
 
-3. When running `cast` commands that require a private key, use `--account myKeystore --sender <KEYSTORE_ADDRESS>` instead of `--private-key <PRIVATE_KEY>`. This will require you to enter the keystore password you provided before.
+#### Using the keystore
+
+When running commands that require a private key, like `forge create` or `cast send`, use `--account myKeystore --sender <KEYSTORE_ADDRESS>`. This will require you to enter the keystore password you provided before.
 
 ### Compiling contracts
 
