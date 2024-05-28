@@ -45,10 +45,30 @@ $ forge snapshot
 $ anvil
 ```
 
+### Private key setup
+
+It's recommended to use Foundry keystore to store your development account private key.
+
+1. Export your account private key.
+2. Create a keystore and import your private key by running:
+
+```shell
+cast wallet import myKeystore --interactive
+# enter your PK when prompted and provide a password
+```
+
+> Note that the name `myKeystore` is arbitrary and can be updated. If you decide to use another name, be sure to reference it when using `cast`.
+
+This will return an address (keystore address), **copy it for later use**.
+
+#### Using the keystore
+
+When running commands that require a private key, like `forge create` or `cast send`, use `--account myKeystore --sender <KEYSTORE_ADDRESS>`. This will require you to enter the keystore password you provided before.
+
 ### Deploy
 
 ```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --account myKeystore --sender <KEYSTORE_ADDRESS>
 ```
 
 ### Cast

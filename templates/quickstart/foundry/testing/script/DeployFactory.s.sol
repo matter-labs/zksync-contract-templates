@@ -8,8 +8,7 @@ import "../src/CrowdfundingCampaign.sol";
 
 contract DeployFactoryAndCreateCampaign is Script {
     function run() external {
-        uint256 deployerPrivateKey = vm.envUint("WALLET_PRIVATE_KEY");
-        vm.startBroadcast(deployerPrivateKey);
+        vm.startBroadcast();
 
         // Deploy the CrowdfundingFactory contract
         CrowdfundingFactory factory = new CrowdfundingFactory();

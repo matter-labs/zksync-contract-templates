@@ -189,6 +189,26 @@ $ tree . -d -L 1
 └── test
 ```
 
+### Private key setup
+
+It's recommended to use Foundry keystore to store your development account private key.
+
+1. Export your account private key.
+2. Create a keystore and import your private key by running:
+
+```shell
+cast wallet import --interactive
+# enter your PK when prompted and provide a password
+```
+
+> Note that the name `myKeystore` is arbitrary and can be updated. If you decide to use another name, be sure to reference it when using `cast`.
+
+This will return an address (keystore address), **copy it for later use**.
+
+#### Using the keystore
+
+When running commands that require a private key, like `forge create` or `cast send`, use `--account myKeystore --sender <KEYSTORE_ADDRESS>`. This will require you to enter the keystore password you provided before.
+
 ### Compiling contracts
 
 We can build the project with `forge build --zksync`:
@@ -204,7 +224,7 @@ Compiled Successfully
 In case missing libraries are detected during the compilation, we can deploy them using the following command:
 
 ```bash
-forge create --deploy-missing-libraries --private-key <PRIVATE_KEY> --rpc-url <RPC_URL> --chain <CHAIN_ID> --zksync
+forge create --deploy-missing-libraries --account myKeystore --sender <KEYSTORE_ADDRESS> --rpc-url <RPC_URL> --chain <CHAIN_ID> --zksync
 ```
 
 After deployment is done, the configuration file will be updated and contracts will be automatically compiled again.
