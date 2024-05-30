@@ -8,14 +8,14 @@
   "scripts": {
     "deploy": "hardhat deploy-zksync --script deploy.ts",
     "compile": "hardhat compile",
-    "clean": "hardhat clean" 
+    "clean": "hardhat clean"
   },
   "devDependencies": {
     "@matterlabs/hardhat-zksync": "^1.0.0",
     "@matterlabs/zksync-contracts": "^0.6.1",
     "@nomiclabs/hardhat-etherscan": "^3.1.7",
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.6",
-    "@openzeppelin/contracts": "^4.6.0",
+    "@openzeppelin/contracts": "^4.9.5",
     "@openzeppelin/contracts-upgradeable": "4.9.5",
     "@openzeppelin/upgrades-core": "^1.32.5",
     "@types/chai": "^4.3.4",
