@@ -45,7 +45,7 @@ To use for ZKsync environments, include `--zksync` when running `forge` or `vm.z
 While `foundry-zksync` is **alpha stage**, there are some limitations to be aware of:
 
 - **Compile Time**: Some users may experience slower compile times.
-- **Compiling Libraries**: Compiling non-inlinable libraries requires deployment and adding to configuration. For more information please refer to [official docs](https://era.zksync.io/docs/tools/hardhat/compiling-libraries.html).
+- **Compiling Libraries**: Compiling non-inlinable libraries requires deployment and adding to configuration. For more information please refer to [official docs](https://docs.zksync.io/build/tooling/hardhat/compiling-libraries).
 
     ```toml
     libraries = [
@@ -53,7 +53,7 @@ While `foundry-zksync` is **alpha stage**, there are some limitations to be awar
     ]
     ```
 
-- **Create2 Address Derivation**: There are differences in Create2 Address derivation compared to Ethereum. [Read the details](https://era.zksync.io/docs/reference/architecture/differences-with-ethereum.html#create-create2).
+- **Create2 Address Derivation**: There are differences in Create2 Address derivation compared to Ethereum. [Read the details](https://docs.zksync.io/build/developer-reference/ethereum-differences/evm-instructions#create-create2).
 - **Contract Verification**: Currently contract verification via the `--verify` flag do not work as expected but will be added shortly.  
 - **Specific Foundry Features**: Currently features such as `--gas-report`, `--coverage` may not work as intended. We are actively working on providing support for these feature types.
 

@@ -42,7 +42,7 @@ const config: HardhatUserConfig = {
     version: "latest",
     settings: {
       // find all available options in the official documentation
-      // https://era.zksync.io/docs/tools/hardhat/hardhat-zksync-vyper.html#configuration
+      // https://docs.zksync.io/build/tooling/hardhat/hardhat-zksync-vyper#configuration
     },
   },
   // Currently, only Vyper 0.3.3 or 0.3.9 are supported.
