@@ -25,7 +25,7 @@ npx zksync-cli create
 
 When prompted, select the **Contracts** option to use the templates in this repository.
 
-For detailed instructions and additional resources, please refer to the [official documentation]().
+For detailed instructions and additional resources, please refer to the [official documentation](https://docs.zksync.io/build/zksync-cli).
 
 ## 🤝 Contribution
 
