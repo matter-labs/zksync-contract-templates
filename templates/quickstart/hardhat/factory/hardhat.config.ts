@@ -17,12 +17,6 @@ const config: HardhatUserConfig = {
       zksync: true,
       verifyURL: "https://zksync2-mainnet-explorer.zksync.io/contract_verification",
     },
-    zkSyncGoerliTestnet: { // deprecated network
-      url: "https://testnet.era.zksync.dev",
-      ethNetwork: "goerli",
-      zksync: true,
-      verifyURL: "https://zksync2-testnet-explorer.zksync.dev/contract_verification",
-    },
     dockerizedNode: {
       url: "http://localhost:3050",
       ethNetwork: "http://localhost:8545",
