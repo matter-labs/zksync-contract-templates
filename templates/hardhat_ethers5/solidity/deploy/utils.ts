@@ -15,7 +15,7 @@ export const getProvider = () => {
   const rpcUrl = hre.network.config.url;
   if (!rpcUrl) throw `⛔️ RPC URL wasn't found in "${hre.network.name}"! Please add a "url" field to the network config in hardhat.config.ts`;
   
-  // Initialize zkSync Provider
+  // Initialize ZKsync Provider
   const provider = new Provider(rpcUrl);
 
   return provider;
@@ -29,7 +29,7 @@ export const getWallet = (privateKey?: string) => {
 
   const provider = getProvider();
   
-  // Initialize zkSync Wallet
+  // Initialize ZKsync Wallet
   const wallet = new Wallet(privateKey ?? process.env.WALLET_PRIVATE_KEY!, provider);
 
   return wallet;
@@ -74,29 +74,38 @@ type DeployContractOptions = {
 export const deployContract = async (contractArtifactName: string, constructorArguments?: any[], options?: DeployContractOptions) => {
   const log = (message: string) => {
     if (!options?.silent) console.log(message);
-  }
+  };
 
   log(`\nStarting deployment process of "${contractArtifactName}"...`);
-  
+
   const wallet = options?.wallet ?? getWallet();
   const deployer = new Deployer(hre, wallet);
-  const artifact = await deployer.loadArtifact(contractArtifactName).catch((error) => {
-    if (error?.message?.includes(`Artifact for contract "${contractArtifactName}" not found.`)) {
-      console.error(error.message);
-      throw `⛔️ Please make sure you have compiled your contracts or specified the correct contract name!`;
-    } else {
-      throw error;
-    }
-  });
+  const artifact = await deployer
+    .loadArtifact(contractArtifactName)
+    .catch((error) => {
+      if (
+        error?.message?.includes(
+          `Artifact for contract "${contractArtifactName}" not found.`
+        )
+      ) {
+        console.error(error.message);
+        throw `⛔️ Please make sure you have compiled your contracts or specified the correct contract name!`;
+      } else {
+        throw error;
+      }
+    });
 
   // Estimate contract deployment fee
-  const deploymentFee = await deployer.estimateDeployFee(artifact, constructorArguments || []);
+  const deploymentFee = await deployer.estimateDeployFee(
+    artifact,
+    constructorArguments || []
+  );
   log(`Estimated deployment cost: ${formatEther(deploymentFee)} ETH`);
 
   // Check if the wallet has enough balance
   await verifyEnoughBalance(wallet, deploymentFee);
 
-  // Deploy the contract to zkSync
+  // Deploy the contract to ZKsync
   const contract = await deployer.deploy(artifact, constructorArguments);
 
   const constructorArgs = contract.interface.encodeDeploy(constructorArguments);
@@ -123,7 +132,7 @@ export const deployContract = async (contractArtifactName: string, constructorAr
 
 /**
  * Rich wallets can be used for testing purposes.
- * Available on zkSync In-memory node and Dockerized node.
+ * Available on ZKsync In-memory node and Dockerized node.
  */
 export const LOCAL_RICH_WALLETS = [
   {

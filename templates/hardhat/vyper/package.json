@@ -1,6 +1,6 @@
 {
   "name": "zksync-hardhat-vyper-template",
-  "description": "A template for zkSync Vyper smart contracts development with Hardhat",
+  "description": "A template for ZKsync Vyper smart contracts development with Hardhat",
   "private": true,
   "author": "Matter Labs",
   "license": "MIT",
