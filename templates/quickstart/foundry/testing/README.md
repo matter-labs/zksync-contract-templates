@@ -1,8 +1,8 @@
-# Foundry with zkSync Era v0.2-alpha
+# Foundry with ZKsync Era v0.2-alpha
 
-This repository enhances Foundry to support zkSync Era, enabling Solidity-based compilation, deployment, testing, and interaction with smart contracts on zkSync Era.
+This repository enhances Foundry to support ZKsync Era, enabling Solidity-based compilation, deployment, testing, and interaction with smart contracts on ZKsync Era.
 
-> 🔧 **Fork Notice:** This is a Foundry fork with added zkSync support.
+> 🔧 **Fork Notice:** This is a Foundry fork with added ZKsync support.
 > 
 > ⚠️ **Alpha Stage:** The project is in alpha, so you might encounter issues.
 > 
@@ -10,28 +10,28 @@ This repository enhances Foundry to support zkSync Era, enabling Solidity-based 
 
 ## Changes Made
 
-To use for zkSync environments, include `--zksync` when running `forge` or `vm.zkVm(true)` in tests. The modifications include:
+To use for ZKsync environments, include `--zksync` when running `forge` or `vm.zkVm(true)` in tests. The modifications include:
 
 1. **Compilation:** `solc` and `zksolc` are used for compiling. The resulting bytecodes are combined into `DualCompiledContract` and managed through `Executor` to `CheatcodeTracer`.
 2. **EVM Interactions:**
-   - EVM calls are standard except for `address.balance` and `block.timestamp`/`block.number`, which pull data from zkSync (ZK-storage and ZK-specific context, respectively).
+   - EVM calls are standard except for `address.balance` and `block.timestamp`/`block.number`, which pull data from ZKsync (ZK-storage and ZK-specific context, respectively).
 3. **Transaction Handling:**
-   - `CALL` and `CREATE` operations are captured and converted to zkSync transactions. This process includes fetching zkSync-equivalent bytecode, managing account nonces, and marking EOA appropriately to comply with zkSync requirements.
+   - `CALL` and `CREATE` operations are captured and converted to ZKsync transactions. This process includes fetching ZKsync-equivalent bytecode, managing account nonces, and marking EOA appropriately to comply with ZKsync requirements.
 4. **Execution and State Management:**
-   - zkSync VM processes the transaction and returns state changes, which are applied to `journaled_state`. Results are relayed back.
+   - ZKsync VM processes the transaction and returns state changes, which are applied to `journaled_state`. Results are relayed back.
 5. **Logging:**
-   - `console.log()` outputs within zkSync VM are captured and displayed in Foundry.
+   - `console.log()` outputs within ZKsync VM are captured and displayed in Foundry.
 6. **Fuzzing**
-   - Adds config option `no_zksync_reserved_addresses`. Since zkSync reserves addresses below 2^16 as system addresses, a fuzz test would've required a broad `vm.assume` and many `vm.excludeSender` calls to exclude these. This is not only cumbersome but could also trigger `proptest`'s global `max_global_rejects` failure. When this option is set to `true` the `proptest` generation itself ensures that no invalid addresses are generated, and thus need not be filtered adding up to the `max_test_rejects` count.
+   - Adds config option `no_zksync_reserved_addresses`. Since ZKsync reserves addresses below 2^16 as system addresses, a fuzz test would've required a broad `vm.assume` and many `vm.excludeSender` calls to exclude these. This is not only cumbersome but could also trigger `proptest`'s global `max_global_rejects` failure. When this option is set to `true` the `proptest` generation itself ensures that no invalid addresses are generated, and thus need not be filtered adding up to the `max_test_rejects` count.
 
 ## 📊 Features & Limitations
 
 ### Features
 
-`Foundry-zksync` offers a set of features designed to work with zkSync Era, providing a comprehensive toolkit for smart contract deployment and interaction:
+`Foundry-zksync` offers a set of features designed to work with ZKsync Era, providing a comprehensive toolkit for smart contract deployment and interaction:
 
-- **Smart Contract Deployment**: Easily deploy smart contracts to zkSync Era mainnet, testnet, or a local test node.
-- **Contract Interaction**: Call and send transactions to deployed contracts on zkSync Era testnet or local test node.
+- **Smart Contract Deployment**: Easily deploy smart contracts to ZKsync Era mainnet, testnet, or a local test node.
+- **Contract Interaction**: Call and send transactions to deployed contracts on ZKsync Era testnet or local test node.
 - **Solidity Testing**: Write tests in Solidity, similar to DappTools, for a familiar testing environment.
 - **Fuzz Testing**: Benefit from fuzz testing, complete with shrinking of inputs and printing of counter-examples.
 - **Remote RPC Forking**: Utilize remote RPC forking mode, leveraging Rust's asynchronous infrastructure like tokio.

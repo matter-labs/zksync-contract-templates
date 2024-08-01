@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-### 🐛 Bug Report for zkSync Contract Templates
+### 🐛 Bug Report for ZKsync Contract Templates
 #### 📝 Description
 
 Provide a clear and concise description of the bug.

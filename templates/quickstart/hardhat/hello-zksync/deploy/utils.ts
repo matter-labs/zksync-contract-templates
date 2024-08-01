@@ -14,7 +14,7 @@ export const getProvider = () => {
   const rpcUrl = hre.network.config.url;
   if (!rpcUrl) throw `⛔️ RPC URL wasn't found in "${hre.network.name}"! Please add a "url" field to the network config in hardhat.config.ts`;
   
-  // Initialize zkSync Provider
+  // Initialize ZKsync Provider
   const provider = new Provider(rpcUrl);
 
   return provider;
@@ -28,7 +28,7 @@ export const getWallet = (privateKey?: string) => {
 
   const provider = getProvider();
   
-  // Initialize zkSync Wallet
+  // Initialize ZKsync Wallet
   const wallet = new Wallet(privateKey ?? process.env.WALLET_PRIVATE_KEY!, provider);
 
   return wallet;
@@ -95,7 +95,7 @@ export const deployContract = async (contractArtifactName: string, constructorAr
   // Check if the wallet has enough balance
   await verifyEnoughBalance(wallet, deploymentFee);
 
-  // Deploy the contract to zkSync
+  // Deploy the contract to ZKsync
   const contract = await deployer.deploy(artifact, constructorArguments);
   const address = await contract.getAddress();
   const constructorArgs = contract.interface.encodeDeploy(constructorArguments);
@@ -122,7 +122,7 @@ export const deployContract = async (contractArtifactName: string, constructorAr
 
 /**
  * Rich wallets can be used for testing purposes.
- * Available on zkSync In-memory node and Dockerized node.
+ * Available on ZKsync In-memory node and Dockerized node.
  */
 export const LOCAL_RICH_WALLETS = [
   {

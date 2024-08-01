@@ -11,7 +11,7 @@ Currently, the repository offers specific templates for Hardhat, an Ethereum dev
 - Ethers v6 (latest)
   - [Solidity Template](./templates/hardhat/solidity/)
   - [Vyper Template](./templates/hardhat/vyper/)
-- Ethers v5 (no longer maintained)
+- Ethers v5 
   - [Solidity Template](./templates/hardhat_ethers5/solidity/)
   - [Vyper Template](./templates/hardhat_ethers5/vyper/)
 
