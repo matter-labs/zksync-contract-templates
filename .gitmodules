@@ -10,3 +10,9 @@
 [submodule "templates/foundry/solidity/lib/forge-std"]
 	path = templates/foundry/solidity/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "templates/foundry/solidity/lib/openzeppelin-contracts"]
+	path = templates/foundry/solidity/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "templates/foundry/solidity/lib/v2-testnet-contracts"]
+	path = templates/foundry/solidity/lib/v2-testnet-contracts
+	url = https://github.com/matter-labs/v2-testnet-contracts
