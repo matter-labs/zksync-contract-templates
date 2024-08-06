@@ -7,3 +7,6 @@
 [submodule "templates/quickstart/foundry/testing/lib/forge-std"]
 	path = templates/quickstart/foundry/testing/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "templates/foundry/solidity/lib/forge-std"]
+	path = templates/foundry/solidity/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
