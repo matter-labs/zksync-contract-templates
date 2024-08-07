@@ -29,6 +29,14 @@ Deploy contracts using the script in the `/script` directory:
 forge script script/DeployGreeter.s.sol:DeployGreeter --rpc-url <network> --account <your_keystore_name> 
 ```
 
+### Interaction
+
+Interact with the deployed greeter contract using:
+
+```
+cast send <contract_address> "setGreeting(string)" "Hi ZKsync" --rpc-url <network> --account <your_keystore_name> 
+```
+
 ### Testing
 
 Run tests for the contracts:
