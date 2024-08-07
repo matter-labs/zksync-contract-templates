@@ -1,66 +1,59 @@
-## Foundry
+## ZKsync Foundry Project Template
 
 **Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
 
-Foundry consists of:
+This project is set up using Foundry and is configured for ZKsync. It includes a structure for developing, deploying, and testing Solidity smart contracts. This project was scaffolded with [zksync-cli](https://github.com/matter-labs/zksync-cli).
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+## Project Layout
 
-## Documentation
+- **`/src`**: Contains Solidity smart contracts.
+- **`/script`**: Scripts for contract deployment and interaction.
+- **`/test`**: Test files.
+- **`foundry.toml`**: Configuration settings for Foundry.
 
-https://book.getfoundry.sh/
+## How to Use
 
-## Usage
+### Compilation
 
-### Build
+Compile the smart contracts using Foundry:
 
-```shell
-$ forge build
+```
+forge build --zksync
 ```
 
-### Test
+### Deployment
 
-```shell
-$ forge test
+Deploy contracts using the script in the `/script` directory:
+
+```
+forge script script/DeployGreeter.s.sol:DeployGreeter --rpc-url <network> --account <your_keystore_name> 
 ```
 
-### Format
+### Testing
 
-```shell
-$ forge fmt
+Run tests for the contracts:
+
+```
+forge test --zksync
 ```
 
-### Gas Snapshots
+## Environment Settings
 
-```shell
-$ forge snapshot
+To keep private keys secure, consider using keystores. You can configure these settings using the command below and then follow the instructions.
+
+```
+cast wallet import <name_of_keystore> --interactive
 ```
 
-### Anvil
+## Useful Links
 
-```shell
-$ anvil
-```
+- [Foundry Documentation](https://book.getfoundry.sh/)
+- [ZKsync Documentation](https://docs.zksync.io/)
+- [Official ZKsync Site](https://zksync.io/)
+- [GitHub](https://github.com/matter-labs)
+- [Twitter](https://twitter.com/zksync)
+- [Discord](https://join.zksync.dev/)
 
-### Deploy
+## License
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+This project is under the [MIT](./LICENSE) license.
