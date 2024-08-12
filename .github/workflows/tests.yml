@@ -15,9 +15,11 @@ jobs:
       matrix:
         include:
           - name: Solidity
-            directory: 'templates/hardhat/solidity'
+            directory: "templates/hardhat/solidity"
           - name: Vyper
-            directory: 'templates/hardhat/vyper'
+            directory: "templates/hardhat/vyper"
+          - name: 101
+            directory: "templates/101"
     steps:
       - name: Checkout
         uses: actions/checkout@v4

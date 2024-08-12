@@ -1,1 +1,18 @@
 .DS_Store
+
+package-lock.json
+node_modules
+
+era_test_node.log
+
+# Compilation output
+**/.upgradable/
+build-test/
+dist
+artifacts-zk/
+cache-zk/
+deployments-zk/
+deployments/
+
+typechain-types
+typechain
