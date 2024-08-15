@@ -19,11 +19,6 @@ const config: HardhatUserConfig = {
       ethNetwork: "mainnet",
       zksync: true,
     },
-    zkSyncGoerliTestnet: { // deprecated network
-      url: "https://testnet.era.zksync.dev",
-      ethNetwork: "goerli",
-      zksync: true,
-    },
     dockerizedNode: {
       url: "http://localhost:3050",
       ethNetwork: "http://localhost:8545",

@@ -25,7 +25,7 @@ export default async function () {
   console.log(`Current message is: ${response}`);
 
   // Run contract write function
-  const transaction = await contract.setGreeting("Hello people!");
+  const transaction = await contract.set_greeting("Hello people!");
   console.log(`Transaction hash of setting new message: ${transaction.hash}`);
 
   // Wait until transaction is processed
