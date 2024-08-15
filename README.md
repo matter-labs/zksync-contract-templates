@@ -17,7 +17,12 @@ Currently, the repository offers specific templates for Hardhat, an Ethereum dev
 
 ## 🚀 Using Templates
 
-To create a project using a template, run the following command and follow the prompts to select your desired template category and specific framework or tool:
+To create a project using a template, first install the zksync-cli package globally by running:
+
+```
+npm install -g zksync-cli
+```
+Once the package is installed, you can create a project using the following command and follow the prompts to select your desired template category and specific framework or tool:
 
 ```
 npx zksync-cli create
