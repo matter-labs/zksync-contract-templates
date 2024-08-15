@@ -48,7 +48,7 @@ WALLET_PRIVATE_KEY=your_private_key_here...
 
 ### Local Tests
 
-Running `npm run test` by default runs the [zkSync In-memory Node](https://docs.zksync.io/build/test-and-debug/in-memory-node) provided by the [@matterlabs/hardhat-zksync-node](https://docs.zksync.io/build/tooling/hardhat/hardhat-zksync-node) tool.
+Running `npm run test` by default runs the [ZKsync In-memory Node](https://docs.zksync.io/build/test-and-debug/in-memory-node) provided by the [@matterlabs/hardhat-zksync-node](https://docs.zksync.io/build/tooling/hardhat/hardhat-zksync-node) tool.
 
 Important: ZKsync In-memory Node currently supports only the L2 node. If contracts also need L1, use another testing environment like Dockerized Node.
 Refer to [test documentation](https://docs.zksync.io/build/test-and-debug) for details.

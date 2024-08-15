@@ -1,37 +1,37 @@
-# Foundry with zkSync Era v0.2-alpha
+# Foundry with ZKsync Era v0.2-alpha
 
-This repository enhances Foundry to support zkSync Era, enabling Solidity-based compilation, deployment, testing, and interaction with smart contracts on zkSync Era.
+This repository enhances Foundry to support ZKsync Era, enabling Solidity-based compilation, deployment, testing, and interaction with smart contracts on ZKsync Era.
 
-> 🔧 **Fork Notice:** This is a Foundry fork with added zkSync support.
-> 
+> 🔧 **Fork Notice:** This is a Foundry fork with added ZKsync support.
+>
 > ⚠️ **Alpha Stage:** The project is in alpha, so you might encounter issues.
-> 
+>
 > 🐞 **Found an Issue?** Please report it to help us improve.
 
 ## Changes Made
 
-To use for zkSync environments, include `--zksync` when running `forge` or `vm.zkVm(true)` in tests. The modifications include:
+To use for ZKsync environments, include `--zksync` when running `forge` or `vm.zkVm(true)` in tests. The modifications include:
 
 1. **Compilation:** `solc` and `zksolc` are used for compiling. The resulting bytecodes are combined into `DualCompiledContract` and managed through `Executor` to `CheatcodeTracer`.
 2. **EVM Interactions:**
-   - EVM calls are standard except for `address.balance` and `block.timestamp`/`block.number`, which pull data from zkSync (ZK-storage and ZK-specific context, respectively).
+   - EVM calls are standard except for `address.balance` and `block.timestamp`/`block.number`, which pull data from ZKsync (ZK-storage and ZK-specific context, respectively).
 3. **Transaction Handling:**
-   - `CALL` and `CREATE` operations are captured and converted to zkSync transactions. This process includes fetching zkSync-equivalent bytecode, managing account nonces, and marking EOA appropriately to comply with zkSync requirements.
+   - `CALL` and `CREATE` operations are captured and converted to ZKsync transactions. This process includes fetching ZKsync-equivalent bytecode, managing account nonces, and marking EOA appropriately to comply with ZKsync requirements.
 4. **Execution and State Management:**
-   - zkSync VM processes the transaction and returns state changes, which are applied to `journaled_state`. Results are relayed back.
+   - ZKsync VM processes the transaction and returns state changes, which are applied to `journaled_state`. Results are relayed back.
 5. **Logging:**
-   - `console.log()` outputs within zkSync VM are captured and displayed in Foundry.
+   - `console.log()` outputs within ZKsync VM are captured and displayed in Foundry.
 6. **Fuzzing**
-   - Adds config option `no_zksync_reserved_addresses`. Since zkSync reserves addresses below 2^16 as system addresses, a fuzz test would've required a broad `vm.assume` and many `vm.excludeSender` calls to exclude these. This is not only cumbersome but could also trigger `proptest`'s global `max_global_rejects` failure. When this option is set to `true` the `proptest` generation itself ensures that no invalid addresses are generated, and thus need not be filtered adding up to the `max_test_rejects` count.
+   - Adds config option `no_zksync_reserved_addresses`. Since ZKsync reserves addresses below 2^16 as system addresses, a fuzz test would've required a broad `vm.assume` and many `vm.excludeSender` calls to exclude these. This is not only cumbersome but could also trigger `proptest`'s global `max_global_rejects` failure. When this option is set to `true` the `proptest` generation itself ensures that no invalid addresses are generated, and thus need not be filtered adding up to the `max_test_rejects` count.
 
 ## 📊 Features & Limitations
 
 ### Features
 
-`Foundry-zksync` offers a set of features designed to work with zkSync Era, providing a comprehensive toolkit for smart contract deployment and interaction:
+`Foundry-zksync` offers a set of features designed to work with ZKsync Era, providing a comprehensive toolkit for smart contract deployment and interaction:
 
-- **Smart Contract Deployment**: Easily deploy smart contracts to zkSync Era mainnet, testnet, or a local test node.
-- **Contract Interaction**: Call and send transactions to deployed contracts on zkSync Era testnet or local test node.
+- **Smart Contract Deployment**: Easily deploy smart contracts to ZKsync Era mainnet, testnet, or a local test node.
+- **Contract Interaction**: Call and send transactions to deployed contracts on ZKsync Era testnet or local test node.
 - **Solidity Testing**: Write tests in Solidity, similar to DappTools, for a familiar testing environment.
 - **Fuzz Testing**: Benefit from fuzz testing, complete with shrinking of inputs and printing of counter-examples.
 - **Remote RPC Forking**: Utilize remote RPC forking mode, leveraging Rust's asynchronous infrastructure like tokio.
@@ -47,14 +47,14 @@ While `foundry-zksync` is **alpha stage**, there are some limitations to be awar
 - **Compile Time**: Some users may experience slower compile times.
 - **Compiling Libraries**: Compiling non-inlinable libraries requires deployment and adding to configuration. For more information please refer to [official docs](https://era.zksync.io/docs/tools/hardhat/compiling-libraries.html).
 
-    ```toml
-    libraries = [
-        "src/MyLibrary.sol:MyLibrary:0xfD88CeE74f7D78697775aBDAE53f9Da1559728E4"
-    ]
-    ```
+  ```toml
+  libraries = [
+      "src/MyLibrary.sol:MyLibrary:0xfD88CeE74f7D78697775aBDAE53f9Da1559728E4"
+  ]
+  ```
 
 - **Create2 Address Derivation**: There are differences in Create2 Address derivation compared to Ethereum. [Read the details](https://era.zksync.io/docs/reference/architecture/differences-with-ethereum.html#create-create2).
-- **Contract Verification**: Currently contract verification via the `--verify` flag do not work as expected but will be added shortly.  
+- **Contract Verification**: Currently contract verification via the `--verify` flag do not work as expected but will be added shortly.
 - **Specific Foundry Features**: Currently features such as `--gas-report`, `--coverage` may not work as intended. We are actively working on providing support for these feature types.
 
 For the most effective use of our library, we recommend familiarizing yourself with these features and limitations.
@@ -117,7 +117,7 @@ Ensure you have the necessary tools and environments set up for development:
    ```sh
    # Replace `<YOUR-TARGET>` with your specific platform target, e.g., `x86_64-unknown-linux-gnu`
    rustup install nightly-2023-09-30-<YOUR-TARGET>
-   
+
    # Example for MacOS (Apple Silicon):
    rustup install nightly-2023-09-30-aarch64-apple-darwin
    ```
@@ -170,7 +170,7 @@ To install all the tools in the suite:
 cargo build --release
 ```
 
-## Quickstart 
+## Quickstart
 
 In an empty directory, run the following command:
 
@@ -244,3 +244,4 @@ Ran 2 tests for test/Counter.t.sol:CounterTest
 Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 3.57s (3.56s CPU time)
 
 Ran 1 test suite in 3.57s (3.57s CPU time): 2 tests passed, 0 failed, 0 skipped (2 total tests)
+```

@@ -1,6 +1,6 @@
 {
   "name": "hello-zksync-quickstart",
-  "description": "A template for zkSync smart contracts development with Hardhat",
+  "description": "A template for ZKsync smart contracts development with Hardhat",
   "private": true,
   "author": "Matter Labs",
   "license": "MIT",
@@ -8,7 +8,7 @@
   "scripts": {
     "deploy": "hardhat deploy-zksync --script deploy.ts",
     "compile": "hardhat compile",
-    "clean": "hardhat clean" 
+    "clean": "hardhat clean"
   },
   "devDependencies": {
     "@matterlabs/hardhat-zksync": "^1.0.0",
