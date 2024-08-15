@@ -25,7 +25,7 @@ npm install -g zksync-cli
 Once the package is installed, you can create a project using the following command and follow the prompts to select your desired template category and specific framework or tool:
 
 ```
-npx zksync-cli create
+zksync-cli create
 ```
 
 When prompted, select the **Contracts** option to use the templates in this repository.
