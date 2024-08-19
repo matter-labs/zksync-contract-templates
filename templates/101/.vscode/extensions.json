@@ -1,0 +1,12 @@
+{
+	"recommendations": [
+	  "christian-kohler.npm-intellisense",
+	  "christian-kohler.path-intellisense",
+	  "dbaeumer.vscode-eslint",
+	  "editorconfig.editor",
+	  "esbenp.prettier-vscode",
+	  "mikestead.dotenv",
+	  "yoavbls.pretty-ts-errors"
+	],
+	"unwantedRecommendations": []
+  }
