@@ -29,7 +29,7 @@ export default async function (hre: HardhatRuntimeEnvironment) {
   const contract = new ethers.Contract(
     await deployedContract.getAddress(),
     contractArtifact.abi,
-    getWallet(LOCAL_RICH_WALLETS[1].privateKey)
+    getWallet(LOCAL_RICH_WALLETS[0].privateKey)
   );
   const contributionAmount = ethers.parseEther("0.0001");
 
