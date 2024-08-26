@@ -3,7 +3,7 @@ import { Deployer } from "@matterlabs/hardhat-zksync";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 
 // Replace with the address of the proxy contract you want to upgrade
-const proxyAddress = "0x60Aa68f9D0D736B9a0a716d04323Ba3b22602840";
+const proxyAddress = "YOUR_PROXY_ADDRESS_HERE";
 
 export default async function (hre: HardhatRuntimeEnvironment) {
   const wallet = getWallet();
@@ -30,5 +30,5 @@ export default async function (hre: HardhatRuntimeEnvironment) {
   const initTx = await upgradedContract.initializeV2(durationInSeconds);
   const receipt = await initTx.wait();
 
-  console.log("V2_UUPSCrowdfundingCampaign initialized!", receipt.hash);
+  console.log("V2_UUPSCrowdfundingCampaign initialized! Transaction Hash: ", receipt.hash);
 }

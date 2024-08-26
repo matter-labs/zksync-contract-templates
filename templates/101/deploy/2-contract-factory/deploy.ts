@@ -1,4 +1,4 @@
-import { deployContract, getWallet } from "../utils";
+import { deployContract, getWallet } from "../../utils";
 import { ethers } from "ethers";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 
