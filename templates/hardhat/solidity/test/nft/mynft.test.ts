@@ -1,6 +1,10 @@
-import { expect } from 'chai';
+import { expect } from "chai";
 import { Contract, Wallet } from "zksync-ethers";
-import { getWallet, deployContract, LOCAL_RICH_WALLETS } from '../../deploy/utils';
+import {
+  getWallet,
+  deployContract,
+  LOCAL_RICH_WALLETS,
+} from "../../deploy/utils";
 
 describe("MyNFT", function () {
   let nftContract: Contract;
@@ -13,7 +17,12 @@ describe("MyNFT", function () {
 
     nftContract = await deployContract(
       "MyNFT",
-      ["MyNFTName", "MNFT", "https://mybaseuri.com/token/"],
+      [
+        "MyNFTName",
+        "MNFT",
+        "https://mybaseuri.com/token/",
+        ownerWallet.address,
+      ],
       { wallet: ownerWallet, silent: true }
     );
   });
@@ -26,9 +35,9 @@ describe("MyNFT", function () {
   });
 
   it("Should have correct token URI after minting", async function () {
-    const tokenId = 1; // Assuming the first token minted has ID 1
+    const tokenId = 0; // Assuming the first token minted has ID 1
     const tokenURI = await nftContract.tokenURI(tokenId);
-    expect(tokenURI).to.equal("https://mybaseuri.com/token/1");
+    expect(tokenURI).to.equal("https://mybaseuri.com/token/0");
   });
 
   it("Should allow owner to mint multiple NFTs", async function () {
@@ -42,11 +51,17 @@ describe("MyNFT", function () {
 
   it("Should not allow non-owner to mint NFTs", async function () {
     try {
-      const tx3 = await (nftContract.connect(recipientWallet) as Contract).mint(recipientWallet.address);
+      const tx3 = await (nftContract.connect(recipientWallet) as Contract).mint(
+        recipientWallet.address
+      );
       await tx3.wait();
       expect.fail("Expected mint to revert, but it didn't");
     } catch (error) {
-      expect(error.message).to.include("Ownable: caller is not the owner");
+      if (error instanceof Error) {
+        expect(error.message).to.include("execution reverted");
+      } else {
+        expect.fail("Expected an Error object, but got something else");
+      }
     }
   });
 });

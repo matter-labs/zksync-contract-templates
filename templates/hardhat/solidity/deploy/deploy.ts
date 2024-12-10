@@ -6,5 +6,6 @@ import { deployContract } from "./utils";
 export default async function () {
   const contractArtifactName = "Greeter";
   const constructorArguments = ["Hi there!"];
+  
   await deployContract(contractArtifactName, constructorArguments);
 }
