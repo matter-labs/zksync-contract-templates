@@ -111,3 +111,9 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Deployment files
+deployments-zk
+
+era_test_node.log
+anvil_zksync.log

@@ -26,7 +26,7 @@ contract ApprovalPaymaster is IPaymaster, Ownable {
         _;
     }
 
-    constructor(address _erc20) {
+    constructor(address _erc20, address initialOwner) Ownable(initialOwner) {
         allowedToken = _erc20;
     }
 

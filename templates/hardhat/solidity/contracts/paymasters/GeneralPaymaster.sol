@@ -12,6 +12,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 /// @author Matter Labs
 /// @notice This contract does not include any validations other than using the paymaster general flow.
 contract GeneralPaymaster is IPaymaster, Ownable {
+    constructor(address initialOwner) Ownable(initialOwner) {}
+
     modifier onlyBootloader() {
         require(
             msg.sender == BOOTLOADER_FORMAL_ADDRESS,

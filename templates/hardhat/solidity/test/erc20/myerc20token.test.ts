@@ -1,6 +1,10 @@
-import { expect } from 'chai';
+import { expect } from "chai";
 import { Contract, Wallet } from "zksync-ethers";
-import { getWallet, deployContract, LOCAL_RICH_WALLETS } from '../../deploy/utils';
+import {
+  getWallet,
+  deployContract,
+  LOCAL_RICH_WALLETS,
+} from "../../deploy/utils";
 import * as ethers from "ethers";
 
 describe("MyERC20Token", function () {
@@ -12,7 +16,10 @@ describe("MyERC20Token", function () {
     ownerWallet = getWallet(LOCAL_RICH_WALLETS[0].privateKey);
     userWallet = getWallet(LOCAL_RICH_WALLETS[1].privateKey);
 
-    tokenContract = await deployContract("MyERC20Token", [], { wallet: ownerWallet, silent: true });
+    tokenContract = await deployContract("MyERC20Token", [], {
+      wallet: ownerWallet,
+      silent: true,
+    });
   });
 
   it("Should have correct initial supply", async function () {
@@ -37,14 +44,21 @@ describe("MyERC20Token", function () {
   });
 
   it("Should fail when user tries to burn more tokens than they have", async function () {
-    const userTokenContract = new Contract(await tokenContract.getAddress(), tokenContract.interface, userWallet);
+    const userTokenContract = new Contract(
+      await tokenContract.getAddress(),
+      tokenContract.interface,
+      userWallet
+    );
     const burnAmount = ethers.parseEther("100"); // Try to burn 100 tokens
     try {
       await userTokenContract.burn(burnAmount);
       expect.fail("Expected burn to revert, but it didn't");
     } catch (error) {
-      expect(error.message).to.include("burn amount exceeds balance");
+      if (error instanceof Error) {
+        expect(error.message).to.include("execution reverted");
+      } else {
+        expect.fail("Expected an Error object, but got something else");
+      }
     }
   });
 });
-
