@@ -1,7 +1,7 @@
 // Script that interacts with a Greeter contract
 
 // Address of the contract to interact with
-const CONTRACT_ADDRESS = "0xFFeb9e8750fC50bA4A9bc314C8624b23EDb2448f";
+const CONTRACT_ADDRESS = "";
 if (!CONTRACT_ADDRESS) throw "⛔️ Provide address of the contract to interact with!";
 
 async function main() {

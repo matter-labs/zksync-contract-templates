@@ -1,6 +1,7 @@
 import { HardhatUserConfig } from "hardhat/config";
 
 import "@matterlabs/hardhat-zksync";
+
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -31,17 +32,11 @@ const config: HardhatUserConfig = {
       url: "http://localhost:3050",
       ethNetwork: "http://localhost:8545",
       zksync: true,
-      accounts: process.env.WALLET_PRIVATE_KEY
-        ? [process.env.WALLET_PRIVATE_KEY]
-        : [],
     },
     anvilZKsync: {
       url: "http://127.0.0.1:8011",
-      ethNetwork: "localhost", // in-memory node doesn't support eth node; removing this line will cause an error
+      ethNetwork: "localhost", // anvil doesn't support eth node; removing this line will cause an error
       zksync: true,
-      accounts: process.env.WALLET_PRIVATE_KEY
-        ? [process.env.WALLET_PRIVATE_KEY]
-        : [],
     },
     hardhat: {
       zksync: true,
