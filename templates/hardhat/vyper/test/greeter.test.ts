@@ -1,16 +1,17 @@
 import { expect } from 'chai';
-import { getWallet, deployContract } from '../deploy/utils';
-
-const RICH_WALLET_PK = '0x7726827caac94a7f9e1b160f7ea819f172f7b6f9d2a97f992c38edeab82d4110';
+import { ethers } from 'hardhat';
 
 describe('Greeter', function () {
   it("Should return the new greeting once it's changed", async function () {
-    const wallet = getWallet(RICH_WALLET_PK);
+    // Get signer for deployment
+    // const [deployer] = await ethers.getSigners();
 
+    // Get contract factory and deploy
+    const Greeter = await ethers.getContractFactory("Greeter");
     const greeting = "Hello world!";
-    const greeter = await deployContract("Greeter", [greeting], { wallet, silent: true });
+    const greeter = await Greeter.deploy(greeting);
 
-    expect(await greeter.greet()).to.eq(greeting);
+    expect(await greeter.greeting()).to.eq(greeting);
 
     const newGreeting = "Hola, mundo!";
     const setGreetingTx = await greeter.set_greeting(newGreeting);
@@ -18,6 +19,6 @@ describe('Greeter', function () {
     // wait until the transaction is processed
     await setGreetingTx.wait();
 
-    expect(await greeter.greet()).to.equal(newGreeting);
+    expect(await greeter.greeting()).to.equal(newGreeting);
   });
 });

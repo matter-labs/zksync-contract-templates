@@ -6,27 +6,27 @@
   "license": "MIT",
   "repository": "https://github.com/matter-labs/zksync-hardhat-template.git",
   "scripts": {
-    "deploy": "hardhat deploy-zksync --script deploy.ts",
-    "interact": "hardhat deploy-zksync --script interact.ts",
-    "compile": "hardhat compile",
-    "clean": "hardhat clean",
-    "test": "hardhat test --network hardhat"
+    "deploy": "npx hardhat run ./scripts/deploy.ts",
+    "interact": "npx hardhat run ./scripts/interact.ts",
+    "compile": "npx hardhat compile",
+    "clean": "npx hardhat clean",
+    "test": "npx hardhat test --network hardhat"
   },
   "devDependencies": {
-    "@matterlabs/hardhat-zksync-deploy": "^1.5.0",
-    "@matterlabs/hardhat-zksync-node": "^1.1.1",
+    "@matterlabs/hardhat-zksync-ethers": "^1.2.0",
+    "@matterlabs/hardhat-zksync-node": "^1.2.0",
     "@matterlabs/hardhat-zksync-vyper": "^1.1.1",
     "@nomicfoundation/hardhat-verify": "^2.0.9",
     "@nomiclabs/hardhat-vyper": "^3.0.7",
     "@types/chai": "^4.3.16",
     "@types/mocha": "^10.0.7",
     "chai": "^4.5.0",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.4.7",
     "ethers": "^6.13.2",
     "hardhat": "^2.22.7",
     "mocha": "^10.7.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4",
-    "zksync-ethers": "^6.11.0"
+    "zksync-ethers": "^6.15.0"
   }
 }
