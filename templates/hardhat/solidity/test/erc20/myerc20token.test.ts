@@ -1,12 +1,11 @@
 import { expect } from "chai";
 import * as hre from "hardhat";
-import { Contract } from "ethers";
-import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
+import { Contract, Signer } from "ethers";
 
 describe("MyERC20Token", function () {
   let tokenContract: Contract;
-  let owner: SignerWithAddress;
-  let user: SignerWithAddress;
+  let owner: Signer;
+  let user: Signer;
 
   before(async function () {
     // Get signers using hardhat-ethers
