@@ -1,4 +1,4 @@
-import { HardhatUserConfig } from "hardhat/config";
+import type { HardhatUserConfig } from "hardhat/config";
 
 import "@matterlabs/hardhat-zksync";
 
