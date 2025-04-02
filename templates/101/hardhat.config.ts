@@ -17,15 +17,29 @@ const config: HardhatUserConfig = {
       url: "https://sepolia.era.zksync.dev",
       ethNetwork: "sepolia",
       zksync: true,
-      verifyURL:
-        "https://explorer.sepolia.era.zksync.dev/contract_verification",
+      verifyURL: "https://explorer.sepolia.era.zksync.dev/contract_verification",
     },
     zkSyncMainnet: {
       url: "https://mainnet.era.zksync.io",
       ethNetwork: "mainnet",
       zksync: true,
-      verifyURL:
-        "https://zksync2-mainnet-explorer.zksync.io/contract_verification",
+      verifyURL: "https://zksync2-mainnet-explorer.zksync.io/contract_verification",
+    },
+    sophonMainnet: {
+      url: "https://rpc.sophon.xyz",
+      ethNetwork: "mainnet",
+      verifyURL: "https://verification-explorer.sophon.xyz/contract_verification",
+      browserVerifyURL: "https://explorer.sophon.xyz/",
+      enableVerifyURL: true,
+      zksync: true,
+    },
+    sophonTestnet: {
+      url: "https://rpc.testnet.sophon.xyz",
+      ethNetwork: "sepolia",
+      verifyURL: "https://api-explorer-verify.testnet.sophon.xyz/contract_verification",
+      browserVerifyURL: "https://explorer.testnet.sophon.xyz/",
+      enableVerifyURL: true,
+      zksync: true,
     },
     hardhat: {
       zksync: true,

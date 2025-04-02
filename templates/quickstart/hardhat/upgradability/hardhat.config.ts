@@ -17,6 +17,18 @@ const config: HardhatUserConfig = {
       zksync: true,
       verifyURL: "https://zksync2-mainnet-explorer.zksync.io/contract_verification",
     },
+    sophonTestnet: {
+      url: "https://rpc.testnet.sophon.xyz",
+      ethNetwork: "sepolia",
+      verifyURL: "https://api-explorer-verify.testnet.sophon.xyz/contract_verification",
+      zksync: true,
+    },
+    sophonMainnet: {
+      url: "https://rpc.sophon.xyz",
+      ethNetwork: "mainnet",
+      verifyURL: "https://verification-explorer.sophon.xyz/contract_verification",
+      zksync: true,
+    },
     dockerizedNode: {
       url: "http://localhost:3050",
       ethNetwork: "http://localhost:8545",
