@@ -1,13 +1,14 @@
-import { HardhatUserConfig } from "hardhat/config";
+import type { HardhatUserConfig } from "hardhat/config";
 
 import "@matterlabs/hardhat-zksync";
+
 import dotenv from "dotenv";
 dotenv.config();
 
 const config: HardhatUserConfig = {
-  defaultNetwork: "zkSyncSepoliaTestnet",
+  defaultNetwork: "ZKsyncEraSepolia",
   networks: {
-    zkSyncSepoliaTestnet: {
+    ZKsyncEraSepolia: {
       url: "https://sepolia.era.zksync.dev",
       ethNetwork: "sepolia",
       zksync: true,
@@ -17,7 +18,7 @@ const config: HardhatUserConfig = {
         ? [process.env.WALLET_PRIVATE_KEY]
         : [],
     },
-    zkSyncMainnet: {
+    ZKsyncEraMainnet: {
       url: "https://mainnet.era.zksync.io",
       ethNetwork: "mainnet",
       zksync: true,
@@ -31,17 +32,13 @@ const config: HardhatUserConfig = {
       url: "http://localhost:3050",
       ethNetwork: "http://localhost:8545",
       zksync: true,
-      accounts: process.env.WALLET_PRIVATE_KEY
-        ? [process.env.WALLET_PRIVATE_KEY]
-        : [],
+      accounts: process.env.WALLET_PRIVATE_KEY ? [process.env.WALLET_PRIVATE_KEY] : [],
     },
     anvilZKsync: {
       url: "http://127.0.0.1:8011",
-      ethNetwork: "localhost", // in-memory node doesn't support eth node; removing this line will cause an error
+      ethNetwork: "localhost", // anvil doesn't support eth node; removing this line will cause an error
       zksync: true,
-      accounts: process.env.WALLET_PRIVATE_KEY
-        ? [process.env.WALLET_PRIVATE_KEY]
-        : [],
+      accounts: process.env.WALLET_PRIVATE_KEY ? [process.env.WALLET_PRIVATE_KEY] : [],
     },
     hardhat: {
       zksync: true,

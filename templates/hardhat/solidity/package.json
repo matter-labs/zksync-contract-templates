@@ -6,8 +6,10 @@
   "license": "MIT",
   "repository": "https://github.com/matter-labs/zksync-hardhat-template.git",
   "scripts": {
-    "deploy": "hardhat deploy-zksync --script deploy.ts",
-    "interact": "hardhat deploy-zksync --script interact.ts",
+    "deploy": "hardhat run ./scripts/deploy.ts",
+    "deploy-erc20": "hardhat run ./scripts/deploy-erc20.ts",
+    "deploy-nft": "hardhat run ./scripts/deploy-nft.ts",
+    "interact": "hardhat run ./scripts/interact.ts",
     "compile": "hardhat compile",
     "clean": "hardhat clean",
     "test": "hardhat test --network hardhat"

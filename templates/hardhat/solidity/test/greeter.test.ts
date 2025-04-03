@@ -1,12 +1,14 @@
 import { expect } from 'chai';
-import { getWallet, deployContract, LOCAL_RICH_WALLETS } from '../deploy/utils';
+
+import * as hre from "hardhat";
 
 describe('Greeter', function () {
   it("Should return the new greeting once it's changed", async function () {
-    const wallet = getWallet(LOCAL_RICH_WALLETS[0].privateKey);
-
+    // Get contract factory and deploy
+    const Greeter = await hre.ethers.getContractFactory("Greeter");
     const greeting = "Hello world!";
-    const greeter = await deployContract("Greeter", [greeting], { wallet, silent: true });
+    const greeter = await Greeter.deploy(greeting);
+    await greeter.waitForDeployment();
 
     expect(await greeter.greet()).to.eq(greeting);
 
