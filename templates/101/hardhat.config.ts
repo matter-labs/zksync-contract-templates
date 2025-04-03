@@ -18,14 +18,14 @@ const config: HardhatUserConfig = {
       ethNetwork: "sepolia",
       zksync: true,
       verifyURL:
-        "https://explorer.sepolia.era.zksync.dev/contract_verification",
+        " https://block-explorer-api.sepolia.zksync.dev/api",
     },
     zkSyncMainnet: {
       url: "https://mainnet.era.zksync.io",
       ethNetwork: "mainnet",
       zksync: true,
       verifyURL:
-        "https://zksync2-mainnet-explorer.zksync.io/contract_verification",
+        "https://block-explorer-api.mainnet.zksync.io/api",
     },
     hardhat: {
       zksync: true,

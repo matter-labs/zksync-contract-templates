@@ -12,7 +12,7 @@ const config: HardhatUserConfig = {
       ethNetwork: "sepolia",
       zksync: true,
       verifyURL:
-        "https://explorer.sepolia.era.zksync.dev/contract_verification",
+        "https://block-explorer-api.sepolia.zksync.dev/api",
       accounts: process.env.WALLET_PRIVATE_KEY
         ? [process.env.WALLET_PRIVATE_KEY]
         : [],
@@ -22,7 +22,7 @@ const config: HardhatUserConfig = {
       ethNetwork: "mainnet",
       zksync: true,
       verifyURL:
-        "https://zksync2-mainnet-explorer.zksync.io/contract_verification",
+        "https://block-explorer-api.mainnet.zksync.io/api",
       accounts: process.env.WALLET_PRIVATE_KEY
         ? [process.env.WALLET_PRIVATE_KEY]
         : [],
