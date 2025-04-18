@@ -23,13 +23,13 @@ describe("UUPS Proxy Campaign", function () {
       "UUPSCrowdfundingCampaign"
     );
 
-    // delete the .upgradable/ZKsync-era-test-node.json file
+    // delete the .upgradable/ZKsync-anvil.json file
     // to ensure that the contract is deployed
     // from scratch
     const filePath = path.join(
       __dirname,
       "../../",
-      ".upgradable/ZKsync-era-test-node.json"
+      ".upgradable/ZKsync-anvil.json"
     );
 
     if (fs.existsSync(filePath)) {

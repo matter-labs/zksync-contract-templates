@@ -14,6 +14,7 @@
 node_modules/
 
 era_test_node.log
+anvil-zksync.log
 
 package-lock.json
 node_modules

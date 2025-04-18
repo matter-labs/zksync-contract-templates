@@ -6,7 +6,7 @@ import { Deployer } from "@matterlabs/hardhat-zksync";
 import * as hre from "hardhat";
 import {
   ProxyableCrowdfundingCampaign,
-  V2ProxyableCrowdfundingCampaign,
+  V2_ProxyableCrowdfundingCampaign,
 } from "../../typechain-types";
 import fs from "fs";
 import path from "path";
@@ -23,13 +23,13 @@ describe("Transparent Proxy Campaign", function () {
       "ProxyableCrowdfundingCampaign"
     );
 
-    // delete the .upgradable/ZKsync-era-test-node.json file
+    // delete the .upgradable/ZKsync-anvil.json file
     // to ensure that the contract is deployed
     // from scratch
     const filePath = path.join(
       __dirname,
       "../../",
-      ".upgradable/ZKsync-era-test-node.json"
+      ".upgradable/ZKsync-anvil.json"
     );
 
     if (fs.existsSync(filePath)) {
@@ -62,7 +62,7 @@ describe("Transparent Proxy Campaign", function () {
   });
 
   describe("V2", function () {
-    let v2campaign: V2ProxyableCrowdfundingCampaign;
+    let v2campaign: V2_ProxyableCrowdfundingCampaign;
     let blockTimestamp: number;
     const durationInSeconds = 1800; // 5 hours
 
@@ -80,7 +80,7 @@ describe("Transparent Proxy Campaign", function () {
         contractV2Artifact,
         {},
         true
-      )) as unknown as V2ProxyableCrowdfundingCampaign;
+      )) as unknown as V2_ProxyableCrowdfundingCampaign;
 
       v2campaign.connect(deployer.zkWallet);
       // wait some time before the next call

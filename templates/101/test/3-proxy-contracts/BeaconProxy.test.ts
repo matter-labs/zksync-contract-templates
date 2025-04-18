@@ -25,13 +25,13 @@ describe("Beacon Proxy Campaign", function () {
       "BeaconCrowdfundingCampaign"
     );
 
-    // delete the .upgradable/ZKsync-era-test-node.json file
+    // delete the .upgradable/ZKsync-anvil.json file
     // to ensure that the contract is deployed
     // from scratch
     const filePath = path.join(
       __dirname,
       "../../",
-      ".upgradable/ZKsync-era-test-node.json"
+      ".upgradable/ZKsync-anvil.json"
     );
 
     if (fs.existsSync(filePath)) {
@@ -42,6 +42,7 @@ describe("Beacon Proxy Campaign", function () {
     beacon = await hre.zkUpgrades.deployBeacon(
       deployer.zkWallet,
       contractArtifact,
+      [],
       {},
       true
     );
