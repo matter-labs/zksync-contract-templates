@@ -12,6 +12,7 @@
   ],
   "scripts": {
     "deploy:hello-zksync": "hardhat run ./deploy/1-hello-zksync/deploy.ts",
+    "interact:hello-zksync": "hardhat run ./deploy/1-hello-zksync/interact.ts",
     "deploy:crowdfunding-factory": "hardhat run ./deploy/2-contract-factory/deploy.ts",
     "test:crowdfunding-campaign": "hardhat test --network hardhat test/1-hello-zksync/CrowdfundingCampaign.test.ts",
     "deploy:transparent-proxy": "hardhat run ./deploy/3-proxy-contracts/transparent/deploy.ts",

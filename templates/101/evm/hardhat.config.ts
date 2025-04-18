@@ -5,9 +5,12 @@ import "@nomicfoundation/hardhat-chai-matchers";
 import "@openzeppelin/hardhat-upgrades";
 
 const config: HardhatUserConfig = {
-  defaultNetwork: "hardhat",
+  defaultNetwork: "localhost",
   networks: {
     hardhat: {},
+    localhost: {
+      url: "http://127.0.0.1:8545"
+    },
     ZKsyncEraSepolia: {
       url: "https://sepolia.era.zksync.dev",
       accounts: process.env.WALLET_PRIVATE_KEY ? [process.env.WALLET_PRIVATE_KEY] : [],
