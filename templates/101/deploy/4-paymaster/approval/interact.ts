@@ -1,36 +1,17 @@
-import * as hre from "hardhat";
-import {
-  getWallet,
-  getProvider,
-  deployContract,
-  LOCAL_RICH_WALLETS,
-} from "../../../utils";
-import { ethers } from "ethers";
+import { ethers } from "hardhat";
 import { utils } from "zksync-ethers";
-import { HardhatRuntimeEnvironment } from "hardhat/types";
-import { CrowdfundingCampaign } from "../../../typechain-types";
 
 // Update with the addresses for your paymaster contract
 // and token contract
 const TOKEN_ADDRESS = "YOUR_TOKEN_ADDRESS";
 const PAYMASTER_ADDRESS = "YOUR_PAYMASTER_ADDRESS";
 
-export default async function (hre: HardhatRuntimeEnvironment) {
-  const provider = getProvider();
-  console.log("Deploying a CrowdfundingCampaign contract...");
-
-  // Deploy a crowdfund contract for this example.
-  // We will use the paymaster to cover funds when
-  // the user contributes to the crowdfund
-  const deployedContract = await deployCrowdfundContract();
-  const contractArtifact = await hre.artifacts.readArtifact(
-    "CrowdfundingCampaign"
-  );
-  const contract = new ethers.Contract(
-    await deployedContract.getAddress(),
-    contractArtifact.abi,
-    getWallet(LOCAL_RICH_WALLETS[0].privateKey)
-  );
+async function main () {
+  const CONTRACT_NAME = "CrowdfundingCampaign";
+  const ARGS = [ethers.parseEther(".02").toString()];
+  const contract = await ethers.deployContract(CONTRACT_NAME, ARGS, {});
+  await contract.waitForDeployment();
+  
   const contributionAmount = ethers.parseEther("0.0001");
 
   // Get paymaster params for the ApprovalBased paymaster
@@ -49,12 +30,13 @@ export default async function (hre: HardhatRuntimeEnvironment) {
     },
   });
 
+  const gasPrice = await ethers.providerL2.getGasPrice();
+
   // Contribute to the crowdfund contract
   // and have the paymaster cover the funds
   const transaction = await contract.contribute({
     value: contributionAmount,
-    maxPriorityFeePerGas: 0n,
-    maxFeePerGas: await provider.getGasPrice(),
+    maxFeePerGas: gasPrice,
     gasLimit,
     // Pass the paymaster params as custom data
     customData: {
@@ -74,10 +56,9 @@ export default async function (hre: HardhatRuntimeEnvironment) {
   console.log("Contribution successful!");
 }
 
-async function deployCrowdfundContract(): Promise<CrowdfundingCampaign> {
-  const contractArtifactName = "CrowdfundingCampaign";
-  const constructorArguments = [ethers.parseEther(".02").toString()];
-  return (await deployContract(contractArtifactName, constructorArguments, {
-    silent: true,
-  })) as unknown as CrowdfundingCampaign;
-}
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });

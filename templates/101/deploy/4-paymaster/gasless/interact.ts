@@ -1,33 +1,20 @@
-import {
-  getProvider,
-  deployContract,
-  getWallet,
-  LOCAL_RICH_WALLETS,
-} from "../../../utils";
-import { ethers } from "ethers";
-import { utils, Wallet } from "zksync-ethers";
-import { HardhatRuntimeEnvironment } from "hardhat/types";
-import { CrowdfundingCampaign } from "../../../typechain-types";
+import { ethers } from "hardhat";
+import { utils } from "zksync-ethers";
 
 // Update with the address for your paymaster contract
 const PAYMASTER_ADDRESS = "YOUR_PAYMASTER_ADDRESS";
 
-export default async function (hre: HardhatRuntimeEnvironment) {
-  const provider = getProvider();
+async function main () {
   console.log("Deploying a CrowdfundingCampaign contract...");
 
   // Deploy a crowdfund contract for this example.
   // We will use the paymaster to cover funds when
   // the user contributes to the crowdfund
-  const deployedContract = await deployCrowdfundContract();
-  const contractArtifact = await hre.artifacts.readArtifact(
-    "CrowdfundingCampaign"
-  );
-  const contract = new ethers.Contract(
-    await deployedContract.getAddress(),
-    contractArtifact.abi,
-    getWallet(LOCAL_RICH_WALLETS[1].privateKey)
-  );
+  const CONTRACT_NAME = "CrowdfundingCampaign";
+  const ARGS = [ethers.parseEther(".02").toString()];
+  const contract = await ethers.deployContract(CONTRACT_NAME, ARGS, {});
+  await contract.waitForDeployment();
+  
   const contributionAmount = ethers.parseEther("0.01");
 
   // Get paymaster params for the Gasless paymaster
@@ -48,7 +35,7 @@ export default async function (hre: HardhatRuntimeEnvironment) {
   const transaction = await contract.contribute({
     value: contributionAmount,
     maxPriorityFeePerGas: 0n,
-    maxFeePerGas: await provider.getGasPrice(),
+    maxFeePerGas: await ethers.provider.getGasPrice(),
     gasLimit,
     // Pass the paymaster params as custom data
     customData: {
@@ -68,13 +55,9 @@ export default async function (hre: HardhatRuntimeEnvironment) {
   console.log("Contribution successful!");
 }
 
-export async function deployCrowdfundContract(
-  wallet?: Wallet
-): Promise<CrowdfundingCampaign> {
-  const contractArtifactName = "CrowdfundingCampaign";
-  const constructorArguments = [ethers.parseEther(".02").toString()];
-  return (await deployContract(contractArtifactName, constructorArguments, {
-    wallet,
-    silent: true,
-  })) as unknown as CrowdfundingCampaign;
-}
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });

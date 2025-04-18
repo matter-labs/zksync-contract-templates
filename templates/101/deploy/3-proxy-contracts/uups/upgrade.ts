@@ -1,27 +1,22 @@
-import { getWallet } from "../../../utils";
-import { Deployer } from "@matterlabs/hardhat-zksync";
-import { HardhatRuntimeEnvironment } from "hardhat/types";
+import { ethers, upgrades } from "hardhat";
 
 // Replace with the address of the proxy contract you want to upgrade
-const proxyAddress = "YOUR_PROXY_ADDRESS_HERE";
+const proxyAddress = "0x4768d649Da9927a8b3842108117eC0ca7Bc6953f";
+// const proxyAddress = "YOUR_PROXY_ADDRESS_HERE";
 
-export default async function (hre: HardhatRuntimeEnvironment) {
-  const wallet = getWallet();
-  const deployer = new Deployer(hre, wallet);
-
-  const contractV2Artifact = await deployer.loadArtifact(
+async function main() {
+  const contractV2factory = await ethers.getContractFactory(
     "V2_UUPSCrowdfundingCampaign"
   );
-  const upgradedContract = await hre.zkUpgrades.upgradeProxy(
-    deployer.zkWallet,
+
+  const upgradedContract = await upgrades.upgradeProxy(
     proxyAddress,
-    contractV2Artifact
+    contractV2factory
   );
   console.log(
     "Successfully upgraded UUPSCrowdfundingCampaign to V2_UUPSCrowdfundingCampaign"
   );
 
-  upgradedContract.connect(deployer.zkWallet);
   // wait some time before the next call
   await new Promise((resolve) => setTimeout(resolve, 0));
 
@@ -32,3 +27,10 @@ export default async function (hre: HardhatRuntimeEnvironment) {
 
   console.log("V2_UUPSCrowdfundingCampaign initialized! Transaction Hash: ", receipt.hash);
 }
+
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });

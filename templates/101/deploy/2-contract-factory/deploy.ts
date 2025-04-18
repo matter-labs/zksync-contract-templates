@@ -1,21 +1,13 @@
-import { deployContract, getWallet } from "../../utils";
-import { ethers } from "ethers";
-import { HardhatRuntimeEnvironment } from "hardhat/types";
+import { ethers } from "hardhat";
 
-export default async function (hre: HardhatRuntimeEnvironment) {
+async function main() {
   const contractArtifactName = "CrowdfundingFactory";
-  const crowdfundingFactory = await deployContract(contractArtifactName);
-
+  const crowdfundingFactory = await ethers.deployContract(contractArtifactName, [], {});
+  await crowdfundingFactory.waitForDeployment();
+  
   console.log(`🏭 CrowdfundingFactory address: ${crowdfundingFactory.target}`);
-
-  const contractArtifact = await hre.artifacts.readArtifact(
-    "CrowdfundingFactory"
-  );
-  const factoryContract = new ethers.Contract(
-    crowdfundingFactory.target,
-    contractArtifact.abi,
-    getWallet()
-  );
+  
+  const factoryContract = crowdfundingFactory;
 
   // Define funding goal for the campaign, e.g., 0.1 ether
   const fundingGoalInWei = ethers.parseEther("0.1").toString();
@@ -31,3 +23,10 @@ export default async function (hre: HardhatRuntimeEnvironment) {
   console.log(`🚀 New CrowdfundingCampaign deployed at: ${newCampaignAddress}`);
   console.log("✅ Deployment and campaign creation complete!");
 }
+
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });

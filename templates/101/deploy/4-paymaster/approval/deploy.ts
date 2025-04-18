@@ -1,29 +1,21 @@
-import { Wallet } from "zksync-ethers";
-import {
-  deployContract,
-  getWallet,
-  getProvider,
-  LOCAL_RICH_WALLETS,
-} from "../../../utils";
-import { BaseContract, ethers } from "ethers";
-import { ApprovalFlowPaymaster, CrownToken } from "../../../typechain-types";
+import type { Contract } from "ethers";
+import { ethers } from "hardhat";
 
-export default async function () {
-  const wallet = getWallet(LOCAL_RICH_WALLETS[0].privateKey);
-  const provider = getProvider();
+async function main () {
+  const [signer] = await ethers.getSigners();
+  const crownToken = await deployContract("CrownToken", [])
+  const crownTokenAddress = await crownToken.getAddress();
 
-  const crownToken = await deployCrownToken(wallet);
-
-  const paymaster = await deployPaymaster(wallet, crownToken);
+  const paymaster = await deployContract("ApprovalFlowPaymaster", [crownTokenAddress]);
 
   await (
-    await wallet.sendTransaction({
+    await signer.sendTransaction({
       to: paymaster.target,
       value: ethers.parseEther("0.005"),
     })
   ).wait();
 
-  let paymasterBalance = await provider.getBalance(paymaster.target.toString());
+  let paymasterBalance = await ethers.provider.getBalance(paymaster.target.toString());
   console.log(
     `\nPaymaster ETH balance is now ${ethers.formatEther(
       paymasterBalance.toString()
@@ -31,42 +23,26 @@ export default async function () {
   );
 }
 
-export async function deployCrownToken(
-  wallet: Wallet,
+async function deployContract(
+  contractArtifactName: string,
+  constructorArgs: any[],
   quiet = false
-): Promise<CrownToken> {
-  const contractArtifactName = "CrownToken";
-  const contract = (await deployContract(contractArtifactName, [], {
-    wallet,
-    silent: true,
-  })) as unknown as CrownToken;
+): Promise<Contract> {
+  const contract = await ethers.deployContract(contractArtifactName, constructorArgs, {});
+  await contract.waitForDeployment();
 
   !quiet
     ? console.log(
-        `\nCrownToken contract deployed at ${await contract.getAddress()}`
+        `${contractArtifactName} contract deployed at ${await contract.getAddress()}`
       )
     : null;
 
   return contract;
 }
 
-export async function deployPaymaster(
-  wallet: Wallet,
-  _tokenAddress: BaseContract,
-  quiet = false
-): Promise<ApprovalFlowPaymaster> {
-  const contractArtifactName = "ApprovalFlowPaymaster";
-  const tokenAddress = await _tokenAddress.getAddress();
-  const contract = (await deployContract(contractArtifactName, [tokenAddress], {
-    wallet,
-    silent: true,
-  })) as unknown as ApprovalFlowPaymaster;
-
-  !quiet
-    ? console.log(
-        `ApprovalFlowPaymaster contract deployed at ${await contract.getAddress()}`
-      )
-    : null;
-
-  return contract;
-}
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });

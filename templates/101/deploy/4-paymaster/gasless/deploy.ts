@@ -1,28 +1,19 @@
-import { Wallet } from "zksync-ethers";
-import {
-  deployContract,
-  getWallet,
-  getProvider,
-  LOCAL_RICH_WALLETS,
-} from "../../../utils";
-import { ethers } from "ethers";
-import { GaslessPaymaster } from "../../../typechain-types";
+import { ethers } from "hardhat";
+import type { Contract } from "ethers";
 
-export default async function () {
-  const wallet = getWallet(LOCAL_RICH_WALLETS[0].privateKey);
-  const provider = getProvider();
-
-  const paymaster = await deployPaymaster(wallet);
+async function main () {
+ const paymaster = await deployContract("GaslessPaymaster", []);
+ const [signer] = await ethers.getSigners();
 
   // Supplying paymaster with ETH
   await (
-    await wallet.sendTransaction({
+    await signer.sendTransaction({
       to: paymaster.target,
       value: ethers.parseEther("0.005"),
     })
   ).wait();
 
-  let paymasterBalance = await provider.getBalance(paymaster.target.toString());
+  let paymasterBalance = await ethers.provider.getBalance(paymaster.target.toString());
   console.log(
     `\nPaymaster ETH balance is now ${ethers.formatEther(
       paymasterBalance.toString()
@@ -30,21 +21,26 @@ export default async function () {
   );
 }
 
-export async function deployPaymaster(
-  wallet: Wallet,
-  silent = false
-): Promise<GaslessPaymaster> {
-  const contractArtifactName = "GaslessPaymaster";
-  const contract = (await deployContract(contractArtifactName, [], {
-    wallet,
-    silent: true,
-  })) as unknown as GaslessPaymaster;
+async function deployContract(
+  contractArtifactName: string,
+  constructorArgs: any[],
+  quiet = false
+): Promise<Contract> {
+  const contract = await ethers.deployContract(contractArtifactName, constructorArgs, {});
+  await contract.waitForDeployment();
 
-  !silent
+  !quiet
     ? console.log(
-        `GaslessPaymaster contract deployed at ${await contract.getAddress()}`
+        `${contractArtifactName} contract deployed at ${await contract.getAddress()}`
       )
     : null;
 
   return contract;
 }
+
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });

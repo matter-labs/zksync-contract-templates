@@ -15,7 +15,7 @@
     "test": "hardhat test --network hardhat"
   },
   "devDependencies": {
-    "@matterlabs/hardhat-zksync": "^1.3.0",
+    "@matterlabs/hardhat-zksync": "^1.4.0",
     "@matterlabs/zksync-contracts": "^0.6.1",
     "@nomicfoundation/hardhat-verify": "^2.0.9",
     "@openzeppelin/contracts": "^5.1.0",

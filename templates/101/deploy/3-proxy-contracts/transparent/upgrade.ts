@@ -1,30 +1,20 @@
-import { getWallet } from "../../../utils";
-import { Deployer } from "@matterlabs/hardhat-zksync";
-import * as hre from "hardhat";
+import { ethers, upgrades } from "hardhat";
 
 // Replace with your deployed transparent proxy address
 const proxyAddress = "YOUR_PROXY_ADDRESS_HERE";
 
-export default async function () {
-  const wallet = getWallet();
-  const deployer = new Deployer(hre, wallet);
-
-  const contractV2Artifact = await deployer.loadArtifact(
+async function main() {
+  const contractV2Factory = await ethers.getContractFactory(
     "V2_ProxyableCrowdfundingCampaign"
   );
 
   // Upgrade the proxy to V2
-  const upgradedContract = await hre.zkUpgrades.upgradeProxy(
-    deployer.zkWallet,
-    proxyAddress,
-    contractV2Artifact
-  );
+  const upgradedContract = await upgrades.upgradeProxy(proxyAddress, contractV2Factory);
 
   console.log(
     "Successfully upgraded ProxyableCrowdfundingCampaign to V2_ProxyableCrowdfundingCampaign"
   );
 
-  upgradedContract.connect(deployer.zkWallet);
   // wait some time before the next call
   await new Promise((resolve) => setTimeout(resolve, 2000));
 
@@ -37,3 +27,10 @@ export default async function () {
     `V2_ProxyableCrowdfundingCampaign initialized. Transaction Hash: ${receipt.hash}`
   );
 }
+
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
