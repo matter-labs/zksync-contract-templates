@@ -32,3 +32,4 @@ deployments/
 # Hardhat files
 cache
 artifacts
+.cache
