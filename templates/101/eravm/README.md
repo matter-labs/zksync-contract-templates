@@ -15,7 +15,7 @@ onto the ZKsync in memory node and use ZKsync CLI to interact with the contracts
 - `/contracts`: Contains solidity smart contracts.
 - `/deploy`: Scripts for contract deployment and interaction.
 - `/test`: Test files.
-- `hardhat.config.ts`: Configuration settings, the default network is set to "inMemoryNode".
+- `hardhat.config.ts`: Configuration settings, the default network is set to "anvilZKsync".
 
 ## How to Use
 
