@@ -44,7 +44,7 @@ const config: HardhatUserConfig = {
     },
     anvilZKsync: {
       url: "http://127.0.0.1:8011",
-      ethNetwork: "localhost", // anvil doesn't support eth node; removing this line will cause an error
+      ethNetwork: 'http://localhost:8545',
       zksync: true,
       accounts: process.env.WALLET_PRIVATE_KEY ? [process.env.WALLET_PRIVATE_KEY] : [],
     },
@@ -55,6 +55,7 @@ const config: HardhatUserConfig = {
   zksolc: {
     version: "latest",
     settings: {
+      codegen: 'yul',
       // find all available options in the official documentation
       // https://docs.zksync.io/build/tooling/hardhat/hardhat-zksync-solc#configuration
     },

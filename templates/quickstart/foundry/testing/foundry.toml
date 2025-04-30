@@ -5,7 +5,7 @@ libs = ["lib"]
 
 [rpc_endpoints]
 zkSyncSepoliaTestnet = "https://sepolia.era.zksync.dev"
-inMemoryNode = "http://127.0.0.1:8011"
+anvilZKsync = "http://127.0.0.1:8011"
 sophonTestnet = "https://rpc.testnet.sophon.xyz"
 sophonMainnet = "https://rpc.sophon.xyz"
 

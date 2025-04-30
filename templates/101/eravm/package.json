@@ -1,0 +1,63 @@
+{
+  "name": "zksync-101",
+  "version": "1.0.0",
+  "description": "A project to learn how to build with zksync-cli",
+  "private": true,
+  "author": "Matter Labs",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matter-labs/zksync-contract-templates.git"
+  },
+  "keywords": [
+    "zksync",
+    "zksync-cli",
+    "hardhat"
+  ],
+  "scripts": {
+    "deploy:hello-zksync": "hardhat run ./deploy/1-hello-zksync/deploy.ts",
+    "deploy:crowdfunding-factory": "hardhat run ./deploy/2-contract-factory/deploy.ts",
+    "test:crowdfunding-campaign": "hardhat test --network hardhat test/1-hello-zksync/CrowdfundingCampaign.test.ts",
+    "deploy:transparent-proxy": "hardhat run ./deploy/3-proxy-contracts/transparent/deploy.ts",
+    "upgrade:transparent-proxy": "hardhat run ./deploy/3-proxy-contracts/transparent/upgrade.ts",
+    "deploy:uups-proxy": "hardhat run ./deploy/3-proxy-contracts/uups/deploy.ts",
+    "upgrade:uups-proxy": "hardhat run ./deploy/3-proxy-contracts/uups/upgrade.ts",
+    "deploy:beacon-proxy": "hardhat run ./deploy/3-proxy-contracts/beacon/deploy.ts",
+    "upgrade:beacon-proxy": "hardhat run ./deploy/3-proxy-contracts/beacon/upgrade.ts",
+    "deploy:approval-paymaster": "hardhat run ./deploy/4-paymaster/approval/deploy.ts",
+    "interact:approval-paymaster": "hardhat run ./deploy/4-paymaster/approval/interact.ts",
+    "deploy:gasless-paymaster": "hardhat run ./deploy/4-paymaster/gasless/deploy.ts",
+    "interact:gasless-paymaster": "hardhat run ./deploy/4-paymaster/gasless/interact.ts",
+    "compile": "hardhat compile",
+    "clean": "hardhat clean",
+    "test": "hardhat test --network hardhat"
+  },
+  "bugs": {
+    "url": "https://github.com/matter-labs/zksync-contract-templates/issues"
+  },
+  "homepage": "https://github.com/matter-labs/zksync-contract-templates#readme",
+  "devDependencies": {
+    "@matterlabs/hardhat-zksync": "^1.4.0",
+    "@matterlabs/zksync-contracts": "^0.6.1",
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.8",
+    "@nomicfoundation/hardhat-ignition": "^0.15.5",
+    "@nomicfoundation/hardhat-ignition-ethers": "^0.15.5",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.11",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@nomicfoundation/ignition-core": "^0.15.5",
+    "@openzeppelin/contracts": "^4.9.5",
+    "@openzeppelin/contracts-upgradeable": "^4.9.5",
+    "@typechain/ethers-v6": "^0.5.1",
+    "@typechain/hardhat": "^9.1.0",
+    "@types/chai": "^4.3.17",
+    "@types/mocha": "^10.0.7",
+    "dotenv": "^16.4.5",
+    "hardhat": "^2.22.17",
+    "hardhat-gas-reporter": "^1.0.10",
+    "solidity-coverage": "^0.8.12",
+    "ts-node": "^10.9.2",
+    "typechain": "^8.3.2",
+    "typescript": "^4.9.5",
+    "zksync-ethers": "^6.11.1"
+  }
+}
