@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 
 contract CrownToken is ERC20, Ownable, ERC20Burnable {
-    constructor() ERC20("Crown Token", "CROWN") {
+    constructor() ERC20("Crown Token", "CROWN") Ownable(msg.sender) {
         _mint(msg.sender, 100 * 10 ** decimals());
     }
 

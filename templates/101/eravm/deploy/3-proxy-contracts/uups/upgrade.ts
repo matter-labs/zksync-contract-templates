@@ -1,8 +1,7 @@
 import { ethers, upgrades } from "hardhat";
 
 // Replace with the address of the proxy contract you want to upgrade
-const proxyAddress = "0x4768d649Da9927a8b3842108117eC0ca7Bc6953f";
-// const proxyAddress = "YOUR_PROXY_ADDRESS_HERE";
+const proxyAddress = "YOUR_PROXY_ADDRESS_HERE";
 
 async function main() {
   const contractV2factory = await ethers.getContractFactory(

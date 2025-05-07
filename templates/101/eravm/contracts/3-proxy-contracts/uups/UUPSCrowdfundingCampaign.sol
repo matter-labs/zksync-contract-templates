@@ -21,7 +21,7 @@ contract UUPSCrowdfundingCampaign is
 
     // The `initialize` function replaces the constructor in upgradeable contracts
     function initialize(uint256 _fundingGoal) public initializer {
-        __Ownable_init(); // Initialize ownership to the deployer
+        __Ownable_init(msg.sender); // Initialize ownership to the deployer
         __UUPSUpgradeable_init(); // Initialize UUPS upgradeability
 
         fundingGoal = _fundingGoal;
