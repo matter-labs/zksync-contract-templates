@@ -1,28 +1,36 @@
-import { getWallet } from "../utils";
-import { Deployer } from '@matterlabs/hardhat-zksync';
-import { HardhatRuntimeEnvironment } from "hardhat/types";
+import { ethers, upgrades } from "hardhat";
 
-export default async function (hre: HardhatRuntimeEnvironment) {
-    const wallet = getWallet();
-    const deployer = new Deployer(hre, wallet);
-    
-    const crowdfundingCampaignAddress = 'Proxy address here';
-    
-    const crowdfundingCampaignV2 = await deployer.loadArtifact('CrowdfundingCampaignV2');
-    const upgradedCrowdfundingCampaign = await hre.zkUpgrades.upgradeProxy(deployer.zkWallet, crowdfundingCampaignAddress, crowdfundingCampaignV2);
-    console.log('Successfully upgraded crowdfundingCampaign to crowdfundingCampaignV2');
+// Replace with your deployed transparent proxy address
+const proxyAddress = process.env.TRANSPARENT_PROXY_ADDRESS ?? "YOUR_PROXY_ADDRESS_HERE";
 
-    upgradedCrowdfundingCampaign.connect(deployer.zkWallet);
-    // wait some time before the next call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    
-    const durationInSeconds = 30 * 24 * 60 * 60; // For example, setting a 30-day duration
+async function main() {
+  const contractV2Factory = await ethers.getContractFactory(
+    "CrowdfundingCampaignV2"
+  );
 
-    const initTx = await upgradedCrowdfundingCampaign.initializeV2(durationInSeconds);
-    const receipt = await initTx.wait();
+  // Upgrade the proxy to V2
+  const upgradedContract = await upgrades.upgradeProxy(proxyAddress, contractV2Factory);
 
-    console.log('CrowdfundingCampaignV2 initialized!', receipt.hash);
+  console.log(
+    "Successfully upgraded CrowdfundingCampaign to CrowdfundingCampaignV2"
+  );
 
-    const fundraisingGoal = await upgradedCrowdfundingCampaign.getFundingGoal();
-    console.log('Fundraising goal:', fundraisingGoal.toString());
+  // wait some time before the next call
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+
+  // Initialize V2 with a new campaign duration
+  const durationInSeconds = 30 * 24 * 60 * 60; // For example, setting a 30-day duration
+  const initTx = await upgradedContract.initializeV2(durationInSeconds);
+  const receipt = await initTx.wait();
+
+  console.log(
+    `CrowdfundingCampaignV2 initialized. Transaction Hash: ${receipt?.hash}`
+  );
 }
+
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });

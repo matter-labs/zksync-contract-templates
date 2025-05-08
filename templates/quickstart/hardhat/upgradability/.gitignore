@@ -1,0 +1,35 @@
+# dotenv environment variable files
+
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+.env.*
+!.env.example
+
+# Finder (MacOS) folder config
+.DS_Store
+
+node_modules/
+
+era_test_node.log
+anvil-zksync.log
+
+package-lock.json
+node_modules
+typechain-types
+typechain
+
+**/.upgradable/
+build-test/
+dist
+artifacts-zk/
+cache-zk/
+deployments-zk/
+deployments/
+
+# Hardhat files
+cache
+artifacts
+.cache

@@ -1,29 +1,50 @@
-import { deployContract, getWallet, getProvider } from "./utils";
-import { ethers } from "ethers";
+import type { Contract } from "ethers";
+import { ethers } from "hardhat";
 
-// An example of a basic deploy script
-// It will deploy a CrowdfundingCampaign contract to selected network
-// `parseEther` converts ether to wei, and `.toString()` ensures serialization compatibility.
-export default async function() {
-  const contractArtifactName = "ApprovalFlowPaymaster";
-  const constructorArguments = [];
-  const contract = await deployContract(
-    contractArtifactName,
-    constructorArguments
-  );
-  const wallet = getWallet();
-  const provider = getProvider();
+async function main () {
+  const [signer] = await ethers.getSigners();
+  const TOKEN_CONTRACT_NAME = "MyERC20Token";
+  const tokenContract = await ethers.deployContract(TOKEN_CONTRACT_NAME, [], {});
+  const TOKEN_ADDRESS = await tokenContract.getAddress();
+  console.log("Token contract deployed at:", TOKEN_ADDRESS);
 
-  // Supplying paymaster with ETH
-  // Paymaster will receive CROWN tokens from users and 
-  // cover the gas fees for the transactions using ETH
+  const paymaster = await deployContract("ApprovalFlowPaymaster", [TOKEN_ADDRESS]);
+
   await (
-    await wallet.sendTransaction({
-      to: contract.target,
+    await signer.sendTransaction({
+      to: paymaster.target,
       value: ethers.parseEther("0.005"),
     })
   ).wait();
 
-  let paymasterBalance = await provider.getBalance(contract.target.toString());
-  console.log(`Paymaster ETH balance is now ${paymasterBalance.toString()}`);
+  let paymasterBalance = await ethers.provider.getBalance(paymaster.target.toString());
+  console.log(
+    `\nPaymaster ETH balance is now ${ethers.formatEther(
+      paymasterBalance.toString()
+    )}`
+  );
 }
+
+async function deployContract(
+  contractArtifactName: string,
+  constructorArgs: any[],
+  quiet = false
+): Promise<Contract> {
+  const contract = await ethers.deployContract(contractArtifactName, constructorArgs, {});
+  await contract.waitForDeployment();
+
+  !quiet
+    ? console.log(
+        `${contractArtifactName} contract deployed at ${await contract.getAddress()}`
+      )
+    : null;
+
+  return contract;
+}
+
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });

@@ -1,0 +1,50 @@
+name: Regex Extract
+
+description: 'Reusable action to run a command and extract substrings for an arbitrary list of regex patterns.'
+
+inputs:
+  command:
+    description: 'The shell command to execute.'
+    required: true
+  regex-inputs:
+    description: |
+      New line **or** comma separated list of regex patterns.
+    required: true
+
+outputs:
+  matches:
+    description: 'A JSON array (single line) containing the extracted substrings in the same order the patterns were supplied.'
+
+runs:
+  using: composite
+  steps:
+    - name: Run command and extract substrings
+      id: extract
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        OUTPUT=$(eval "${{ inputs.command }}")
+        echo "Command output: $OUTPUT"
+
+        mapfile -t PATTERNS < <(printf '%s\n' "${{ inputs.regex-inputs }}" | tr ',' '\n' | sed '/^[[:space:]]*$/d')
+
+        if [[ ${#PATTERNS[@]} -eq 0 ]]; then
+          echo "No regex patterns provided." >&2
+          exit 1
+        fi
+
+        declare -a MATCHES=()
+
+        for PAT in "${PATTERNS[@]}"; do
+          if [[ $OUTPUT =~ $PAT ]]; then
+            MATCHES+=("${BASH_REMATCH[1]}")
+          else
+            echo "Pattern did not match: $PAT" >&2
+            exit 1
+          fi
+        done
+
+        JSON_MATCHES=$(printf '%s\n' "${MATCHES[@]}" | jq -R . | jq -cs .)
+        echo "Extracted matches: $JSON_MATCHES"
+        echo "matches=$JSON_MATCHES" >> "$GITHUB_OUTPUT"

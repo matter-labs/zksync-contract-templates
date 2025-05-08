@@ -24,7 +24,7 @@ async function main() {
   const receipt = await initTx.wait();
 
   console.log(
-    `V2_ProxyableCrowdfundingCampaign initialized. Transaction Hash: ${receipt.hash}`
+    `V2_ProxyableCrowdfundingCampaign initialized. Transaction Hash: ${receipt?.hash}`
   );
 }
 

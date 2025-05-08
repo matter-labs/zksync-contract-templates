@@ -24,7 +24,7 @@ async function main() {
   const initTx = await upgradedContract.initializeV2(durationInSeconds);
   const receipt = await initTx.wait();
 
-  console.log("V2_UUPSCrowdfundingCampaign initialized! Transaction Hash: ", receipt.hash);
+  console.log("V2_UUPSCrowdfundingCampaign initialized! Transaction Hash: ", receipt?.hash);
 }
 
 main()
