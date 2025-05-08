@@ -8,24 +8,160 @@ on:
     branches:
       - main
 
+env:
+  WALLET_PRIVATE_KEY: 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+
 jobs:
   run-tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         include:
+          # Hardhat templates
           - name: Solidity
             directory: 'templates/hardhat/solidity'
           - name: Vyper
             directory: 'templates/hardhat/vyper'
+            # ZKsync 101 templates
+          - name: EraVM 101
+            directory: 'templates/101/eravm'
+          - name: EVM 101
+            directory: 'templates/101/evm'
+            # Quickstart Testing
+          - name: Foundry Testing
+            directory: 'templates/quickstart/foundry/testing'
+          - name: Hardhat Testing
+            directory: 'templates/quickstart/hardhat/testing'
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "lts/*"
+      - name: Setup Bun
+        if: '!contains(${{ matrix.directory }}, "foundry")'
+        uses: oven-sh/setup-bun@v1
+      - name: Install Foundry-ZKsync
+        if: contains(matrix.directory, 'foundry')
+        uses: dutterbutter/foundry-zksync-toolchain@v1
       - name: Install dependencies for ${{ matrix.name }}
-        run: cd ${{ matrix.directory }} && yarn install --frozen-lockfile
-      - name: Run ${{ matrix.name }} tests
-        run: cd ${{ matrix.directory }} && yarn test
+        run: cd ${{ matrix.directory }} && bun install --frozen-lockfile
+      - name: Run ${{ matrix.name }} Hardhat tests
+        if: '!contains(${{ matrix.directory }}, "foundry")'
+        run: cd ${{ matrix.directory }} && bun test
+      - name: Run ${{ matrix.name }} Foundry tests
+        if: contains(matrix.directory, 'foundry')
+        run: cd ${{ matrix.directory }} && forge test --zksync -vvv
+
+  # QUICKSTART: PAYMASTER
+  test-quickstart-paymaster:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v1
+      - name: Run anvil-zksync
+        uses: dutterbutter/anvil-zksync-action@v1.1.0
+      - name: Install dependencies for Paymaster
+        run: cd templates/quickstart/hardhat/paymaster && bun install
+
+      # QUICKSTART: PAYMASTER: APPROVAL
+      - name: Deploy Approval Paymaster
+        id: approval_paymaster
+        uses: ./.github/actions/regex
+        with:
+          command: 'cd templates/quickstart/hardhat/paymaster && bun deploy:approval-paymaster --network anvilZKsync'
+          regex-inputs: |
+            Token contract deployed at:[[:space:]]+(0x[0-9a-fA-F]{40})
+            ApprovalFlowPaymaster contract deployed at[[:space:]]+(0x[0-9a-fA-F]{40})
+      - name: Interact with Approval Paymaster
+        run: |
+          cd templates/quickstart/hardhat/paymaster
+          APPROVAL_PAYMASTER_ADDRESS=${{ fromJson(steps.approval_paymaster.outputs.matches)[0] }} \
+          TOKEN_ADDRESS=${{ fromJson(steps.approval_paymaster.outputs.matches)[1] }} \
+          bun interact:approval-paymaster --network anvilZKsync
+
+      # QUICKSTART: PAYMASTER: GENERAL
+      - name: Deploy General Paymaster
+        id: general_paymaster
+        uses: ./.github/actions/regex
+        with:
+          command: 'cd templates/quickstart/hardhat/paymaster && bun deploy:gasless-paymaster --network anvilZKsync'
+          regex-inputs: |
+            contract deployed at:[[:space:]]+(0x[0-9a-fA-F]{40})
+      - name: Interact with Gasless Paymaster
+        run: |
+          cd templates/quickstart/hardhat/paymaster
+          GENERAL_PAYMASTER_ADDRESS=${{ fromJson(steps.approval_paymaster.outputs.matches)[0] }} \
+          bun interact:gasless-paymaster --network anvilZKsync
+
+  # QUICKSTART: TESTING
+  test-quickstart-testing:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v1
+      - name: Run anvil-zksync
+        uses: dutterbutter/anvil-zksync-action@v1.1.0
+      - name: Install dependencies for Testing
+        run: cd templates/quickstart/hardhat/testing && bun install
+
+      # QUICKSTART: TESTING: DEPLOY
+      - name: Deploy contract
+        run: |
+          cd templates/quickstart/hardhat/testing
+          bun run deploy --network anvilZKsync
+
+  # QUICKSTART: UPGRADEABILITY
+  test-quickstart-upgradability:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v1
+      - name: Run anvil-zksync
+        uses: dutterbutter/anvil-zksync-action@v1.1.0
+      - name: Install dependencies for Upgradability
+        run: cd templates/quickstart/hardhat/upgradability && bun install
+
+      # QUICKSTART: UPGRADEABILITY: TRANSPARENT PROXY
+      - name: Deploy Transparent Proxy
+        id: transaparent_proxy
+        uses: ./.github/actions/regex
+        with:
+          command: 'cd templates/quickstart/hardhat/upgradability && bun deploy:transparent-proxy --network anvilZKsync'
+          regex-inputs: |
+            Transparent proxy was deployed to (0x[0-9a-fA-F]{40})
+      - name: Upgrade Transparent Proxy
+        run: |
+          cd templates/quickstart/hardhat/upgradability
+          TRANSPARENT_PROXY_ADDRESS=${{ fromJson(steps.transaparent_proxy.outputs.matches)[0] }} bun hardhat run ./deploy/upgrade-scripts/upgradeCrowdfundingCampaign.ts --network anvilZKsync
+          
+      # QUICKSTART: UPGRADEABILITY: BEACON PROXY
+      - name: Deploy Beacon Proxy
+        id: beacon_proxy
+        uses: ./.github/actions/regex
+        with:
+          command: 'cd templates/quickstart/hardhat/upgradability && bun deploy:beacon-proxy --network anvilZKsync'
+          regex-inputs: |
+            Beacon deployed at:[[:space:]]+(0x[0-9a-fA-F]{40})
+            Beacon proxy deployed at:[[:space:]]+(0x[0-9a-fA-F]{40})
+      - name: Upgrade Beacon Proxy
+        run: |
+          cd templates/quickstart/hardhat/upgradability
+          BEACON_ADDRESS=${{ fromJson(steps.beacon_proxy.outputs.matches)[0] }} \
+          BEACON_PROXY_ADDRESS=${{ fromJson(steps.beacon_proxy.outputs.matches)[1] }} \
+          bun hardhat run ./deploy/upgrade-scripts/upgradeBeaconCrowdfundingCampaign.ts --network anvilZKsync
+
+      # QUICKSTART: UPGRADEABILITY: UUPS PROXY
+      - name: Deploy UUPS Proxy
+        id: uups_proxy
+        uses: ./.github/actions/regex
+        with:
+          command: 'cd templates/quickstart/hardhat/upgradability && bun deploy:uups-proxy --network anvilZKsync'
+          regex-inputs: |
+            UUPS proxy was deployed to[[:space:]]+(0x[0-9a-fA-F]{40})
+      - name: Upgrade UUPS Proxy
+        run: |
+          cd templates/quickstart/hardhat/upgradability
+          UUPS_PROXY_ADDRESS=${{ fromJson(steps.uups_proxy.outputs.matches)[0] }} \
+          bun hardhat run ./deploy/upgrade-scripts/upgradeUUPSCrowdfundingCampaign.ts --network anvilZKsync
