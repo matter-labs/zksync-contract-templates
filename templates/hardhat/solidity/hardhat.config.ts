@@ -1,5 +1,6 @@
 import type { HardhatUserConfig } from "hardhat/config";
 
+import "@nomicfoundation/hardhat-chai-matchers";
 import "@matterlabs/hardhat-zksync";
 
 import dotenv from "dotenv";

@@ -1,18 +1,19 @@
-import * as hre from "hardhat";
+import { ethers } from "hardhat";
 import { expect } from "chai";
 import { Contract, Signer } from "zksync-ethers";
+import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
 
 describe("MyNFT", function () {
   let nftContract: Contract;
-  let owner: Signer;
-  let recipient: Signer;
+  let owner: HardhatEthersSigner;
+  let recipient: HardhatEthersSigner;
 
   before(async function () {
     // Get signers using hardhat-ethers
-    [owner, recipient] = await hre.ethers.getSigners();
+    [owner, recipient] = await ethers.getSigners();
 
     // Get contract factory and deploy
-    const MyNFT = await hre.ethers.getContractFactory("MyNFT");
+    const MyNFT = await ethers.getContractFactory("MyNFT");
     nftContract = await MyNFT.deploy(
       "MyNFTName",
       "MNFT",
