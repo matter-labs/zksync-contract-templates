@@ -31,8 +31,5 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
     "zksync-ethers": "^6.17.0"
-  },
-  "overrides": {
-    "@matterlabs/hardhat-zksync-node": "1.4.0"
   }
 }
