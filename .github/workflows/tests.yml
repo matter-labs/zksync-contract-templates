@@ -60,7 +60,7 @@ jobs:
       # QUICKSTART: PAYMASTER: APPROVAL
       - name: Deploy Approval Paymaster
         id: approval_paymaster
-        uses: ./.github/actions/regex
+        uses: sarahschwartz/cmd-regex-extract@main
         with:
           command: 'cd templates/quickstart/hardhat/paymaster && bun deploy:approval-paymaster --network anvilZKsync'
           regex-inputs: |
@@ -76,7 +76,7 @@ jobs:
       # QUICKSTART: PAYMASTER: GENERAL
       - name: Deploy General Paymaster
         id: general_paymaster
-        uses: ./.github/actions/regex
+        uses: sarahschwartz/cmd-regex-extract@main
         with:
           command: 'cd templates/quickstart/hardhat/paymaster && bun deploy:gasless-paymaster --network anvilZKsync'
           regex-inputs: |
@@ -119,8 +119,8 @@ jobs:
 
       # QUICKSTART: UPGRADEABILITY: TRANSPARENT PROXY
       - name: Deploy Transparent Proxy
-        id: transaparent_proxy
-        uses: ./.github/actions/regex
+        id: transparent_proxy
+        uses: sarahschwartz/cmd-regex-extract@main
         with:
           command: 'cd templates/quickstart/hardhat/upgradability && bun deploy:transparent-proxy --network anvilZKsync'
           regex-inputs: |
@@ -128,12 +128,12 @@ jobs:
       - name: Upgrade Transparent Proxy
         run: |
           cd templates/quickstart/hardhat/upgradability
-          TRANSPARENT_PROXY_ADDRESS=${{ fromJson(steps.transaparent_proxy.outputs.matches)[0] }} bun hardhat run ./deploy/upgrade-scripts/upgradeCrowdfundingCampaign.ts --network anvilZKsync
+          TRANSPARENT_PROXY_ADDRESS=${{ fromJson(steps.transparent_proxy.outputs.matches)[0] }} bun hardhat run ./deploy/upgrade-scripts/upgradeCrowdfundingCampaign.ts --network anvilZKsync
           
       # QUICKSTART: UPGRADEABILITY: BEACON PROXY
       - name: Deploy Beacon Proxy
         id: beacon_proxy
-        uses: ./.github/actions/regex
+        uses: sarahschwartz/cmd-regex-extract@main
         with:
           command: 'cd templates/quickstart/hardhat/upgradability && bun deploy:beacon-proxy --network anvilZKsync'
           regex-inputs: |
@@ -149,7 +149,7 @@ jobs:
       # QUICKSTART: UPGRADEABILITY: UUPS PROXY
       - name: Deploy UUPS Proxy
         id: uups_proxy
-        uses: ./.github/actions/regex
+        uses: sarahschwartz/cmd-regex-extract@main
         with:
           command: 'cd templates/quickstart/hardhat/upgradability && bun deploy:uups-proxy --network anvilZKsync'
           regex-inputs: |
