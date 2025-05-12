@@ -184,6 +184,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          submodules: recursive 
       - name: Run anvil-zksync
         uses: dutterbutter/anvil-zksync-action@v1.1.0
       - name: Install Foundry-ZKsync
