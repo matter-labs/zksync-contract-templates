@@ -1,7 +1,7 @@
 import { ethers, upgrades } from "hardhat";
 
 // Replace with your deployed transparent proxy address
-const proxyAddress = "YOUR_PROXY_ADDRESS_HERE";
+const proxyAddress = process.env.TRANSPARENT_PROXY_ADDRESS ?? "YOUR_PROXY_ADDRESS_HERE";
 
 async function main() {
   const contractV2Factory = await ethers.getContractFactory(

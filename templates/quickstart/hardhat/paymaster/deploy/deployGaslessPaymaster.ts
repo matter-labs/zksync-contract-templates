@@ -9,7 +9,7 @@ async function main () {
   await (
     await signer.sendTransaction({
       to: paymaster.target,
-      value: ethers.parseEther("0.005"),
+      value: ethers.parseEther("0.05"),
     })
   ).wait();
 

@@ -2,7 +2,7 @@ import { ethers } from 'hardhat';
 import type { CrowdfundingCampaign } from '../../typechain-types';
 
 // Address of the contract to interact with
-const CONTRACT_ADDRESS = "";
+const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS ?? "";
 if (!CONTRACT_ADDRESS) throw "⛔️ Provide address of the contract to interact with!";
 
 // Deploy and interact with a CrowdfundingCampaign contract

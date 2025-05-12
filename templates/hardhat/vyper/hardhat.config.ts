@@ -1,5 +1,6 @@
 import { HardhatUserConfig } from "hardhat/config";
 
+import "@nomicfoundation/hardhat-chai-matchers";
 import "@nomiclabs/hardhat-vyper";
 import "@matterlabs/hardhat-zksync-vyper";
 import "@matterlabs/hardhat-zksync-node";

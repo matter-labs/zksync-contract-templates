@@ -2,7 +2,7 @@
 import { ethers } from 'hardhat';
 
 // Address of the contract to interact with
-const CONTRACT_ADDRESS = "";
+const CONTRACT_ADDRESS = process.env.GREETER_ADDRESS ?? "";
 if (!CONTRACT_ADDRESS) throw "⛔️ Provide address of the contract to interact with!";
 
 async function main() {
