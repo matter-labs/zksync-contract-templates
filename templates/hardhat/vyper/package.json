@@ -13,20 +13,20 @@
     "test": "hardhat test --network hardhat"
   },
   "devDependencies": {
-    "@matterlabs/hardhat-zksync-ethers": "^1.2.0",
-    "@matterlabs/hardhat-zksync-node": "^1.2.0",
-    "@matterlabs/hardhat-zksync-vyper": "^1.1.1",
-    "@nomicfoundation/hardhat-verify": "^2.0.9",
-    "@nomiclabs/hardhat-vyper": "^3.0.7",
-    "@types/chai": "^4.3.16",
-    "@types/mocha": "^10.0.7",
-    "chai": "^4.5.0",
-    "dotenv": "^16.4.7",
-    "ethers": "^6.13.2",
-    "hardhat": "^2.22.7",
-    "mocha": "^10.7.0",
+    "@matterlabs/hardhat-zksync": "^1.6.0",
+    "@matterlabs/hardhat-zksync-vyper": "^1.2.1",
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.8",
+    "@nomicfoundation/hardhat-verify": "^2.0.13",
+    "@nomiclabs/hardhat-vyper": "^3.0.8",
+    "@types/chai": "^5.2.2",
+    "@types/mocha": "^10.0.10",
+    "chai": "^4.3.7",
+    "dotenv": "^16.5.0",
+    "ethers": "^6.14.0",
+    "hardhat": "^2.24.0",
+    "mocha": "^11.2.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.4",
-    "zksync-ethers": "^6.15.0"
+    "typescript": "^5.8.3",
+    "zksync-ethers": "^6.17.0"
   }
 }

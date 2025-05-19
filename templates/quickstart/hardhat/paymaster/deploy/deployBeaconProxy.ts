@@ -1,22 +1,23 @@
-import { getWallet } from "./utils";
-import { Deployer } from '@matterlabs/hardhat-zksync';
-import { ethers } from "ethers";
-import { HardhatRuntimeEnvironment } from "hardhat/types";
+import { ethers, upgrades } from "hardhat";
 
-export default async function (hre: HardhatRuntimeEnvironment) {
-    const wallet = getWallet();
-    const deployer = new Deployer(hre, wallet);
+async function main() {
+  const fundingGoalInWei = ethers.parseEther("0.1").toString();
 
-    const contractArtifact = await deployer.loadArtifact("CrowdfundingCampaign");
-    const fundingGoalInWei = ethers.parseEther('0.1').toString();
+  const beaconFactory = await ethers.getContractFactory(
+    "CrowdfundingCampaign"
+  );
+  const beacon = await upgrades.deployBeacon(beaconFactory);
+  await beacon.waitForDeployment();
 
-    const beacon = await hre.zkUpgrades.deployBeacon(
-        getWallet(),
-        contractArtifact
-    );
-    await beacon.waitForDeployment();
-
-    const crowdfunding = await hre.zkUpgrades.deployBeaconProxy(deployer.zkWallet, 
-        await beacon.getAddress(), contractArtifact, [fundingGoalInWei]);
-    await crowdfunding.waitForDeployment();
+  const crowdfunding = await upgrades.deployBeaconProxy(beacon, beaconFactory, [
+    fundingGoalInWei,
+  ]);
+  await crowdfunding.waitForDeployment();
 }
+
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });

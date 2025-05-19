@@ -1,42 +1,38 @@
-import * as hre from "hardhat";
-import { getWallet, getProvider } from "../utils";
-import { ethers } from "ethers";
+import { ethers, upgrades } from "hardhat";
 import { utils } from "zksync-ethers";
 
-// Address of the contract to interact with
-const CONTRACT_ADDRESS = "YOUR-CONTRACT-ADDRESS";
-const PAYMASTER_ADDRESS = "YOUR-PAYMASTER-ADDRESS";
-// Sepolia CROWN token address
-const TOKEN_ADDRESS = "0x927488F48ffbc32112F1fF721759649A89721F8F"
+// Update with the addresses for your paymaster contract
+// and token contract
 
-if (!CONTRACT_ADDRESS || !PAYMASTER_ADDRESS)
-    throw new Error("Contract and Paymaster addresses are required.");
+const PAYMASTER_ADDRESS = process.env.APPROVAL_PAYMASTER_ADDRESS ?? "YOUR_PAYMASTER_ADDRESS";
+const TOKEN_ADDRESS = process.env.TOKEN_ADDRESS ?? "YOUR_TOKEN_ADDRESS";
 
-export default async function() {
-  console.log(`Running script to interact with contract ${CONTRACT_ADDRESS} using paymaster ${PAYMASTER_ADDRESS}`);
+async function main () {
+  const fundingGoal = "0.1";
 
-  // Load compiled contract info
-  const contractArtifact = await hre.artifacts.readArtifact(
-    "CrowdfundingCampaignV2"
-  );
-  const provider = getProvider();
-  // Initialize contract instance for interaction
-  const contract = new ethers.Contract(
-    CONTRACT_ADDRESS,
-    contractArtifact.abi,
-    getWallet()
+  console.log("Deploying with funding goal:", fundingGoal);
+
+  const factory = await ethers.getContractFactory(
+    "CrowdfundingCampaign"
   );
 
+  // Deploy the contract using a transparent proxy
+  const crowdfundingContract = await upgrades.deployProxy(factory, [ethers.parseEther(fundingGoal).toString()], { initializer: "initialize" });
+  await crowdfundingContract.waitForDeployment();
+
+  
+  
   const contributionAmount = ethers.parseEther("0.0001");
+
   // Get paymaster params for the ApprovalBased paymaster
   const paymasterParams = utils.getPaymasterParams(PAYMASTER_ADDRESS, {
     type: "ApprovalBased",
-    token: TOKEN_ADDRESS, 
+    token: TOKEN_ADDRESS,
     minimalAllowance: 1n,
     innerInput: new Uint8Array(),
   });
-
-  const gasLimit = await contract.contribute.estimateGas({
+  // Determine the gas limit for the contribution transaction
+  const gasLimit = await crowdfundingContract.contribute.estimateGas({
     value: contributionAmount,
     customData: {
       gasPerPubdata: utils.DEFAULT_GAS_PER_PUBDATA_LIMIT,
@@ -44,10 +40,13 @@ export default async function() {
     },
   });
 
-  const transaction = await contract.contribute({
+  const gasPrice = await ethers.providerL2.getGasPrice();
+
+  // Contribute to the crowdfund contract
+  // and have the paymaster cover the funds
+  const transaction = await crowdfundingContract.contribute({
     value: contributionAmount,
-    maxPriorityFeePerGas: 0n,
-    maxFeePerGas: await provider.getGasPrice(),
+    maxFeePerGas: gasPrice,
     gasLimit,
     // Pass the paymaster params as custom data
     customData: {
@@ -55,7 +54,21 @@ export default async function() {
       paymasterParams,
     },
   });
+
+  console.log(
+    `Contributing ${ethers.formatEther(
+      contributionAmount.toString()
+    )} to the crowdfund contract...`
+  );
   console.log(`Transaction hash: ${transaction.hash}`);
 
   await transaction.wait();
+  console.log("Contribution successful!");
 }
+
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });

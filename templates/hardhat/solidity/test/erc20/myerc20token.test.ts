@@ -1,18 +1,19 @@
 import { expect } from "chai";
-import * as hre from "hardhat";
-import { Contract, Signer } from "ethers";
+import { ethers } from "hardhat";
+import { Contract } from "ethers";
+import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
 
 describe("MyERC20Token", function () {
   let tokenContract: Contract;
-  let owner: Signer;
-  let user: Signer;
+  let owner: HardhatEthersSigner;
+  let user: HardhatEthersSigner;
 
   before(async function () {
     // Get signers using hardhat-ethers
-    [owner, user] = await hre.ethers.getSigners();
+    [owner, user] = await ethers.getSigners();
 
     // Get contract factory and deploy
-    const MyERC20Token = await hre.ethers.getContractFactory("MyERC20Token");
+    const MyERC20Token = await ethers.getContractFactory("MyERC20Token");
     tokenContract = await MyERC20Token.deploy();
     await tokenContract.waitForDeployment();
   });
@@ -28,7 +29,7 @@ describe("MyERC20Token", function () {
   });
 
   it("Should allow user to transfer tokens", async function () {
-    const transferAmount = hre.ethers.parseEther("50"); // Transfer 50 tokens
+    const transferAmount = ethers.parseEther("50"); // Transfer 50 tokens
     const tx = await tokenContract.transfer(user.address, transferAmount);
     await tx.wait();
     const userBalance = await tokenContract.balanceOf(user.address);
@@ -41,7 +42,7 @@ describe("MyERC20Token", function () {
   });
 
   it("Should allow owner to burn tokens", async function () {
-    const burnAmount = hre.ethers.parseEther("10"); // Burn 10 tokens
+    const burnAmount = ethers.parseEther("10"); // Burn 10 tokens
     const tx = await tokenContract.burn(burnAmount);
     await tx.wait();
     const afterBurnSupply = await tokenContract.totalSupply();
@@ -56,7 +57,7 @@ describe("MyERC20Token", function () {
       tokenContract.interface,
       user
     );
-    const burnAmount = hre.ethers.parseEther("999"); // Try to burn 100 tokens
+    const burnAmount = ethers.parseEther("999"); // Try to burn 100 tokens
     try {
       await userTokenContract.burn(burnAmount);
       expect.fail("Expected burn to revert, but it didn't");

@@ -1,27 +1,46 @@
-import { deployContract, getWallet, getProvider } from "./utils";
-import { ethers } from "ethers";
+import { ethers } from "hardhat";
+import type { Contract } from "ethers";
 
-// An example of a basic deploy script
-// It will deploy a CrowdfundingCampaign contract to selected network
-// `parseEther` converts ether to wei, and `.toString()` ensures serialization compatibility.
-export default async function() {
-  const contractArtifactName = "GaslessPaymaster";
-  const constructorArguments = [];
-  const contract = await deployContract(
-    contractArtifactName,
-    constructorArguments
-  );
-  const wallet = getWallet();
-  const provider = getProvider();
+async function main () {
+ const paymaster = await deployContract("GaslessPaymaster", []);
+ const [signer] = await ethers.getSigners();
 
   // Supplying paymaster with ETH
   await (
-    await wallet.sendTransaction({
-      to: contract.target,
-      value: ethers.parseEther("0.005"),
+    await signer.sendTransaction({
+      to: paymaster.target,
+      value: ethers.parseEther("0.05"),
     })
   ).wait();
 
-  let paymasterBalance = await provider.getBalance(contract.target.toString());
-  console.log(`Paymaster ETH balance is now ${paymasterBalance.toString()}`);
+  let paymasterBalance = await ethers.provider.getBalance(paymaster.target.toString());
+  console.log(
+    `\nPaymaster ETH balance is now ${ethers.formatEther(
+      paymasterBalance.toString()
+    )}`
+  );
 }
+
+async function deployContract(
+  contractArtifactName: string,
+  constructorArgs: any[],
+  quiet = false
+): Promise<Contract> {
+  const contract = await ethers.deployContract(contractArtifactName, constructorArgs, {});
+  await contract.waitForDeployment();
+
+  !quiet
+    ? console.log(
+        `${contractArtifactName} contract deployed at ${await contract.getAddress()}`
+      )
+    : null;
+
+  return contract;
+}
+
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });

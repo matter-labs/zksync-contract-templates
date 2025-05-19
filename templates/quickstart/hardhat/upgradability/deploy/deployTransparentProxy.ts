@@ -1,21 +1,22 @@
-import { getWallet } from "./utils";
-import { Deployer } from '@matterlabs/hardhat-zksync';
-import { ethers } from "ethers";
-import { HardhatRuntimeEnvironment } from "hardhat/types";
+import { ethers, upgrades } from "hardhat";
 
-export default async function (hre: HardhatRuntimeEnvironment) {
-    const wallet = getWallet();
-    const deployer = new Deployer(hre, wallet);
+async function main() {
+  const fundingGoal = "0.1";
 
-    const contractArtifact = await deployer.loadArtifact("CrowdfundingCampaign");
-    const fundingGoalInWei = ethers.parseEther('0.1').toString();
-    // Deploy the contract using a transparent proxy
-    const crowdfunding = await hre.zkUpgrades.deployProxy(
-        getWallet(),
-        contractArtifact,
-        [fundingGoalInWei],
-        { initializer: 'initialize' }
-    );
+  console.log("Deploying with funding goal:", fundingGoal);
 
-    await crowdfunding.waitForDeployment();
+  const factory = await ethers.getContractFactory(
+    "CrowdfundingCampaign"
+  );
+
+  // Deploy the contract using a transparent proxy
+  const crowdfunding = await upgrades.deployProxy(factory, [ethers.parseEther(fundingGoal).toString()], { initializer: "initialize" });
+  return await crowdfunding.waitForDeployment();
 }
+
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });

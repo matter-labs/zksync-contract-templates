@@ -3,8 +3,8 @@ import { utils } from "zksync-ethers";
 
 // Update with the addresses for your paymaster contract
 // and token contract
-const TOKEN_ADDRESS = "YOUR_TOKEN_ADDRESS";
-const PAYMASTER_ADDRESS = "YOUR_PAYMASTER_ADDRESS";
+const TOKEN_ADDRESS = process.env.TOKEN_ADDRESS ?? "YOUR_TOKEN_ADDRESS";
+const PAYMASTER_ADDRESS = process.env.APPROVAL_PAYMASTER_ADDRESS ?? "YOUR_PAYMASTER_ADDRESS";
 
 async function main () {
   const CONTRACT_NAME = "CrowdfundingCampaign";

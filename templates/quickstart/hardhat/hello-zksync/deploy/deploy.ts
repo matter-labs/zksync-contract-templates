@@ -1,11 +1,19 @@
-import { deployContract } from "./utils";
-import { ethers } from "ethers";
+import { ethers, network } from 'hardhat';
 
-// An example of a basic deploy script
-// It will deploy a CrowdfundingCampaign contract to selected network
-// `parseEther` converts ether to wei, and `.toString()` ensures serialization compatibility.
-export default async function () {
-  const contractArtifactName = "CrowdfundingCampaign";
-  const constructorArguments = [ethers.parseEther('.02').toString()];
-  await deployContract(contractArtifactName, constructorArguments);
+// Deploy a CrowdfundingCampaign contract
+async function main() {
+  const CONTRACT_NAME = "CrowdfundingCampaign";
+  const ARGS = [ethers.parseEther(".02").toString()];
+  console.log(`Deploying ${CONTRACT_NAME} contract to ${network.name}`);
+  const contract = await ethers.deployContract(CONTRACT_NAME, ARGS, {});
+  await contract.waitForDeployment();
+  const contractAddress = await contract.getAddress();
+  console.log(`${CONTRACT_NAME} deployed to ${contractAddress}`);
 }
+
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });

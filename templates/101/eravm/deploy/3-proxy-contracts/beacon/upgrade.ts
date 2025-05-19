@@ -2,8 +2,8 @@ import { ethers, upgrades } from "hardhat"
 
 // Update with the address for your beacon contract
 // and the beacon proxy address
-const beaconAddress = "YOUR_BEACON_ADDRESS_HERE";
-const proxyAddress = "YOUR_PROXY_ADDRESS_HERE";
+const beaconAddress = process.env.BEACON_ADDRESS ?? "YOUR_BEACON_ADDRESS_HERE";
+const proxyAddress = process.env.BEACON_PROXY_ADDRESS ?? "YOUR_PROXY_ADDRESS_HERE";
 
 async function main() {
   const beaconV2Factory = await ethers.getContractFactory(
@@ -31,7 +31,7 @@ async function main() {
   const receipt = await initTx.wait();
 
   console.log(
-    `V2_BeaconCrowdfundingCampaign initialized. Transaction Hash: ${receipt.hash}`
+    `V2_BeaconCrowdfundingCampaign initialized. Transaction Hash: ${receipt?.hash}`
   );
 }
 

@@ -1,35 +1,50 @@
 import "@nomicfoundation/hardhat-chai-matchers";
 import { expect } from "chai";
 import { ethers } from "ethers";
-import { getWallet, LOCAL_RICH_WALLETS, deployContract } from "../deploy/utils";
+import { getWallet, LOCAL_RICH_WALLETS, deployContract } from "../utils";
+import { CrowdfundingFactory } from "../typechain-types";
+import { Wallet } from "zksync-ethers";
 
-describe("CrowdfundingCampaign", function () {
-  let campaign;
-  let owner, addr1, addr2;
+describe("CrowdfundingFactory", function () {
+  let factory: CrowdfundingFactory;
+  let owner: Wallet, addr1: Wallet;
 
   beforeEach(async function () {
     owner = getWallet(LOCAL_RICH_WALLETS[0].privateKey);
     addr1 = getWallet(LOCAL_RICH_WALLETS[1].privateKey);
-    addr2 = getWallet(LOCAL_RICH_WALLETS[2].privateKey);
-    const fundingGoalInWei = ethers.parseEther('1').toString();
-    campaign = await deployContract("CrowdfundingCampaign", [fundingGoalInWei], { wallet: owner, silent: true });
+    factory = (await deployContract("CrowdfundingFactory", [], {
+      wallet: owner,
+      silent: true,
+    })) as unknown as CrowdfundingFactory;
   });
 
-  describe("Contribute", function () {
-    it("should reject contributions of 0", async function () {
-      await expect(campaign.connect(addr1).contribute({ value: ethers.parseEther("0") })).to.be.revertedWith("Contribution must be greater than 0");
+  describe("createCampaign", function () {
+    it("should create a new CrowdfundingCampaign", async function () {
+      const fundingGoalInWei = ethers.parseEther("1").toString();
+      const createTx = await factory.createCampaign(fundingGoalInWei);
+      await createTx.wait();
+
+      const [event] = await factory.queryFilter(
+        factory.filters.CampaignCreated()
+      );
+
+      const campaigns = await factory.getCampaigns();
+      const newCampaignAddress = campaigns[campaigns.length - 1];
+
+      expect(newCampaignAddress).to.equal(event.args[0]);
     });
 
-    it("should aggregate contributions in totalFundsRaised", async function () {
-      await campaign.connect(addr1).contribute({ value: ethers.parseEther("0.5") });
-      await campaign.connect(addr2).contribute({ value: ethers.parseEther("0.3") });
-      expect(await campaign.getTotalFundsRaised()).to.equal(ethers.parseEther("0.8"));
-    });
+    it("should emit a CampaignCreated event", async function () {
+      const fundingGoalInWei = ethers.parseEther("1").toString();
+      const createTx = await factory.createCampaign(fundingGoalInWei);
+      await createTx.wait();
 
-    it("should emit GoalReached event when funding goal is met", async function () {
-      await expect(campaign.connect(addr1).contribute({ value: ethers.parseEther("1") }))
-        .to.emit(campaign, "GoalReached")
-        .withArgs(ethers.parseEther("1"));
+      const [event] = await factory.queryFilter(
+        factory.filters.CampaignCreated()
+      );
+
+      expect(event.args[0]).to.be.properAddress;
+      expect(event.args[1]).to.equal(fundingGoalInWei);
     });
   });
 });

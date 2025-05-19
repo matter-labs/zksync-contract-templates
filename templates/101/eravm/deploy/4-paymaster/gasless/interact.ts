@@ -2,7 +2,7 @@ import { ethers } from "hardhat";
 import { utils } from "zksync-ethers";
 
 // Update with the address for your paymaster contract
-const PAYMASTER_ADDRESS = "YOUR_PAYMASTER_ADDRESS";
+const PAYMASTER_ADDRESS = process.env.GENERAL_PAYMASTER_ADDRESS ?? "YOUR_PAYMASTER_ADDRESS";
 
 async function main () {
   console.log("Deploying a CrowdfundingCampaign contract...");

@@ -1,9 +1,9 @@
 import type { HardhatUserConfig } from "hardhat/config";
 
-import "@matterlabs/hardhat-zksync";
 import "@nomicfoundation/hardhat-toolbox";
 import "@typechain/hardhat";
 import "@nomicfoundation/hardhat-chai-matchers";
+import "@matterlabs/hardhat-zksync";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -60,7 +60,7 @@ const config: HardhatUserConfig = {
     },
   },
   solidity: {
-    version: "0.8.24",
+    version: "0.8.29",
   },
 };
 
