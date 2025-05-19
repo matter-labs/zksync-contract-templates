@@ -12,7 +12,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const config: HardhatUserConfig = {
-  solidity: "0.8.24",
+  solidity: "0.8.29",
   // Currently, only Vyper >0.3.3
   vyper: {
     version: "0.4.0",
