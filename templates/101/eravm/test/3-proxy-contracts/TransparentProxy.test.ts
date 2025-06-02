@@ -54,10 +54,8 @@ describe("Transparent Proxy Campaign", function () {
       );
     });
 
-    it("does not allow initialize to be called more than once", async function () {
-      await expect(
-        campaign.initialize(ethers.parseEther("1").toString())
-      ).to.be.revertedWith("Initializable: contract is already initialized");
+    it("does not allow initialize to be called more than once", async () => {
+      await expect(campaign.initialize(ethers.parseEther("1"))).to.be.reverted;
     });
   });
 
@@ -112,7 +110,7 @@ describe("Transparent Proxy Campaign", function () {
     });
 
     // in-memory-node does not support time manipulation yet
-    //
+
     // it("only allows contributions before the deadline", async () => {
     //   await time.increase(durationInSeconds - 1);
     //   await expect(

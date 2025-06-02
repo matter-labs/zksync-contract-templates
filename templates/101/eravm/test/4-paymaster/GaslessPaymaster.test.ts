@@ -3,8 +3,7 @@ import { ethers } from "hardhat";
 import { getWallet, LOCAL_RICH_WALLETS, getProvider } from "../../utils";
 import { CrowdfundingCampaign, GaslessPaymaster } from "../../typechain-types";
 import { Contract, Provider, utils, Wallet } from "zksync-ethers";
-import { deployPaymaster } from "../../deploy/4-paymaster/gasless/deploy";
-import { deployCrowdfundContract } from "../../deploy/4-paymaster/gasless/interact";
+import { deployCrowdfundContract, deployGeneralPaymaster  } from "../../utils"
 import * as hre from "hardhat";
 import { Deployer } from "@matterlabs/hardhat-zksync";
 
@@ -14,7 +13,6 @@ describe("GaslessPaymaster", function () {
   let owner: Wallet, addr1: Wallet;
   let provider: Provider;
   let contributionAmount: bigint;
-  let deployer: Deployer;
   let startingBalance: bigint;
 
   beforeEach(async function () {
@@ -22,9 +20,8 @@ describe("GaslessPaymaster", function () {
     addr1 = getWallet(LOCAL_RICH_WALLETS[1].privateKey);
     provider = getProvider();
     contributionAmount = ethers.parseEther("0.01");
-    deployer = new Deployer(hre, owner);
     startingBalance = await addr1.getBalance();
-    paymaster = await deployPaymaster(owner, true);
+    paymaster = await deployGeneralPaymaster(owner);
     campaign = await deployCrowdfundContract(owner);
 
     // fund the paymaster
@@ -47,7 +44,7 @@ describe("GaslessPaymaster", function () {
     let contract: Contract;
 
     beforeEach(async function () {
-      const contractArtifact = await deployer.loadArtifact(
+      const contractArtifact = await hre.artifacts.readArtifact(
         "CrowdfundingCampaign"
       );
       contract = new ethers.Contract(

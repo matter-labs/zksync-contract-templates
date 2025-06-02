@@ -7,13 +7,12 @@ import {
   CrownToken,
 } from "../../typechain-types";
 import { Contract, Provider, utils, Wallet } from "zksync-ethers";
-import { deployCrowdfundContract } from "../../deploy/4-paymaster/gasless/interact";
+import { deployCrowdfundContract } from "../../utils";
 import * as hre from "hardhat";
-import { Deployer } from "@matterlabs/hardhat-zksync";
 import {
   deployCrownToken,
-  deployPaymaster,
-} from "../../deploy/4-paymaster/approval/deploy";
+  deployApprovalPaymaster,
+} from "../../utils";
 
 describe("ApprovalPaymaster", function () {
   let campaign: CrowdfundingCampaign;
@@ -22,7 +21,6 @@ describe("ApprovalPaymaster", function () {
   let owner: Wallet, addr1: Wallet;
   let provider: Provider;
   let contributionAmount: bigint;
-  let deployer: Deployer;
   let startingBalance: bigint;
 
   beforeEach(async function () {
@@ -30,12 +28,12 @@ describe("ApprovalPaymaster", function () {
     addr1 = getWallet(LOCAL_RICH_WALLETS[1].privateKey);
     contributionAmount = ethers.parseEther("0.01");
     startingBalance = await addr1.getBalance();
-
     provider = getProvider();
-    deployer = new Deployer(hre, owner);
 
-    token = await deployCrownToken(owner, true);
-    paymaster = await deployPaymaster(owner, token, true);
+    token = await deployCrownToken(owner);
+    const tokenAddress = await token.getAddress();
+    console.log("tokenAddress:", tokenAddress);
+    paymaster = await deployApprovalPaymaster(owner, tokenAddress);
     campaign = await deployCrowdfundContract(owner);
 
     await owner.sendTransaction({
@@ -73,9 +71,10 @@ describe("ApprovalPaymaster", function () {
     let contract: Contract;
 
     beforeEach(async function () {
-      const contractArtifact = await deployer.loadArtifact(
+      const contractArtifact = await hre.artifacts.readArtifact(
         "CrowdfundingCampaign"
       );
+
       contract = new ethers.Contract(
         await campaign.getAddress(),
         contractArtifact.abi,

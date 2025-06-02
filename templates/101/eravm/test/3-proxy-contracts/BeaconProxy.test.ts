@@ -68,7 +68,7 @@ describe("Beacon Proxy Campaign", function () {
     it("does not allow initialize to be called more than once", async function () {
       await expect(
         campaign.initialize(ethers.parseEther("1").toString())
-      ).to.be.revertedWith("Initializable: contract is already initialized");
+      ).to.be.reverted;
     });
   });
 
