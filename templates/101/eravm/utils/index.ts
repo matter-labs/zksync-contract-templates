@@ -250,6 +250,7 @@ export async function deployGeneralPaymaster(
     owner
   );
   const contract = await contractFactory.deploy();
+  console.log('GaslessPaymaster contract deployed at', contract.target);
   await contract.waitForDeployment();
   return contract as GaslessPaymaster;
 }
