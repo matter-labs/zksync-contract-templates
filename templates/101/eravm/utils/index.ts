@@ -222,7 +222,7 @@ export async function deployCrownToken(owner: Wallet | HardhatEthersSigner) {
   console.log("Deploying CrownToken contract…");
   const token = await factory.deploy();
   await token.waitForDeployment();
-  console.log("✅ Deployed at", token.target);
+  console.log("CrownToken contract deployed at", token.target);
   return token as CrownToken;
 }
 
@@ -237,6 +237,7 @@ export async function deployApprovalPaymaster(
   );
   const contract = await contractFactory.deploy(tokenAddress);
   await contract.waitForDeployment();
+  console.log('ApprovalFlowPaymaster contract deployed at', contract.target);
   return contract as ApprovalFlowPaymaster;
 }
 
