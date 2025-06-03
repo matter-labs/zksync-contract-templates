@@ -1,9 +1,9 @@
 import { ethers } from "hardhat";
-import type { Contract } from "ethers";
+import { deployGeneralPaymaster } from "../../../utils";
 
-async function main () {
- const paymaster = await deployContract("GaslessPaymaster", []);
- const [signer] = await ethers.getSigners();
+async function main() {
+  const [signer] = await ethers.getSigners();
+  const paymaster = await deployGeneralPaymaster(signer);
 
   // Supplying paymaster with ETH
   await (
@@ -13,29 +13,14 @@ async function main () {
     })
   ).wait();
 
-  let paymasterBalance = await ethers.provider.getBalance(paymaster.target.toString());
+  let paymasterBalance = await ethers.provider.getBalance(
+    paymaster.target.toString()
+  );
   console.log(
     `\nPaymaster ETH balance is now ${ethers.formatEther(
       paymasterBalance.toString()
     )}`
   );
-}
-
-async function deployContract(
-  contractArtifactName: string,
-  constructorArgs: any[],
-  quiet = false
-): Promise<Contract> {
-  const contract = await ethers.deployContract(contractArtifactName, constructorArgs, {});
-  await contract.waitForDeployment();
-
-  !quiet
-    ? console.log(
-        `${contractArtifactName} contract deployed at ${await contract.getAddress()}`
-      )
-    : null;
-
-  return contract;
 }
 
 main()

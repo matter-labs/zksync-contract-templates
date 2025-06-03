@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import {IPaymaster, ExecutionResult, PAYMASTER_VALIDATION_SUCCESS_MAGIC} from "@matterlabs/zksync-contracts/contracts/system-contracts/interfaces/IPaymaster.sol";
 import {IPaymasterFlow} from "@matterlabs/zksync-contracts/contracts/system-contracts/interfaces/IPaymasterFlow.sol";
-import {Transaction} from "@matterlabs/zksync-contracts/contracts/system-contracts/libraries/TransactionHelper.sol";
+import "@matterlabs/zksync-contracts/contracts/system-contracts/libraries/TransactionHelper.sol";
 
 import "@matterlabs/zksync-contracts/contracts/system-contracts/Constants.sol";
 

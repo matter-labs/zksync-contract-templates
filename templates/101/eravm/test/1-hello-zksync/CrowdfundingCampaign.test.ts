@@ -66,8 +66,11 @@ describe("CrowdfundingCampaign", function () {
       await campaign.connect(addr2).contribute({ value: 500000000000000000n });
 
       const initialBalance = await owner.getBalance();
-      await campaign.connect(owner).withdrawFunds();
+      console.log('initialBalance', ethers.formatEther(initialBalance));
+      const tx = await campaign.connect(owner).withdrawFunds();
+      await tx.wait();
       const finalBalance = await owner.getBalance();
+      console.log('finalBalance', ethers.formatEther(finalBalance));
       expect(ethers.formatEther(finalBalance - initialBalance)).to.match(
         /0\.999/
       );

@@ -3,9 +3,11 @@ import * as hre from "hardhat";
 import { Deployer } from "@matterlabs/hardhat-zksync-deploy";
 import dotenv from "dotenv";
 import { ethers } from "ethers";
+import type { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
 
 import "@matterlabs/hardhat-zksync-node/dist/type-extensions";
 import "@matterlabs/hardhat-zksync-verify/dist/src/type-extensions";
+import { ApprovalFlowPaymaster, GaslessPaymaster,  CrowdfundingCampaign, CrownToken } from "../typechain-types";
 
 // Load env file
 dotenv.config();
@@ -199,3 +201,56 @@ export const LOCAL_RICH_WALLETS = [
       "0x3eb15da85647edd9a1159a4a13b9e7c56877c4eb33f614546d4db06a51868b1c",
   },
 ];
+
+export async function deployCrowdfundContract(
+  owner: Wallet | HardhatEthersSigner
+) {
+  console.log("Deploying a CrowdfundingCampaign contract...");
+  const CONTRACT_NAME = "CrowdfundingCampaign";
+
+  const contractFactory = await hre.ethers.getContractFactory(CONTRACT_NAME, owner);
+
+  const contract = await contractFactory.deploy(
+    ethers.parseEther(".02").toString()
+  );
+  await contract.waitForDeployment();
+  return contract as unknown as CrowdfundingCampaign;
+}
+
+export async function deployCrownToken(owner: Wallet | HardhatEthersSigner) {
+  const factory = await hre.ethers.getContractFactory("CrownToken", owner);
+  console.log("Deploying CrownToken contract…");
+  const token = await factory.deploy();
+  await token.waitForDeployment();
+  console.log("CrownToken contract deployed at", token.target);
+  return token as CrownToken;
+}
+
+
+export async function deployApprovalPaymaster(
+  owner: Wallet | HardhatEthersSigner,
+  tokenAddress?: string
+) {
+  const contractFactory = await hre.ethers.getContractFactory(
+    "ApprovalFlowPaymaster",
+    owner
+  );
+  const contract = await contractFactory.deploy(tokenAddress);
+  await contract.waitForDeployment();
+  console.log('ApprovalFlowPaymaster contract deployed at', contract.target);
+  return contract as ApprovalFlowPaymaster;
+}
+
+
+export async function deployGeneralPaymaster(
+  owner: Wallet | HardhatEthersSigner,
+) {
+  const contractFactory = await hre.ethers.getContractFactory(
+    "GaslessPaymaster",
+    owner
+  );
+  const contract = await contractFactory.deploy();
+  console.log('GaslessPaymaster contract deployed at', contract.target);
+  await contract.waitForDeployment();
+  return contract as GaslessPaymaster;
+}
