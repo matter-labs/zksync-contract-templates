@@ -49,7 +49,7 @@ const config: HardhatUserConfig = {
     },
   },
   zksolc: {
-    version: "latest",
+    version: "1.5.15",
     settings: {
       codegen: 'yul',
       // find all available options in the official documentation
@@ -57,7 +57,7 @@ const config: HardhatUserConfig = {
     },
   },
   solidity: {
-    version: "0.8.29",
+    version: "0.8.30",
   },
 };
 
