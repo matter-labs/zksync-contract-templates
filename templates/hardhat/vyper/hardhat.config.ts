@@ -12,13 +12,13 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const config: HardhatUserConfig = {
-  solidity: "0.8.29",
-  // Currently, only Vyper >0.3.3
+  solidity: "0.8.30",
+  // Currently, only Vyper >=0.3.3 <=0.4.1
   vyper: {
     version: "0.4.0",
   },
   zkvyper: {
-    version: "latest",
+    version: "1.5.10",
     settings: {
       // find all available options in the official documentation
       // https://docs.zksync.io/build/tooling/hardhat/hardhat-zksync-vyper#configuration
