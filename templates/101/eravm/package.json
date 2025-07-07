@@ -43,7 +43,7 @@
   },
   "homepage": "https://github.com/matter-labs/zksync-contract-templates#readme",
   "devDependencies": {
-    "@matterlabs/hardhat-zksync": "^1.5.0",
+    "@matterlabs/hardhat-zksync": "^1.6.1",
     "@matterlabs/zksync-contracts": "1.0.0-alpha.9",
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.8",
     "@nomicfoundation/hardhat-ignition": "^0.15.11",
